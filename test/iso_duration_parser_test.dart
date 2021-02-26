@@ -62,6 +62,13 @@ void main() {
       expect(() => isoDuration.toSeconds(), throwsA(isA<AssertionError>()));
       expect(isoDurationNullable, isNotNull);
 
+      input = 'P2W1DT5M';
+      isoDuration = IsoDuration.parse(input);
+      isoDurationNullable = IsoDuration.tryParse(input);
+      expect(isoDuration, IsoDuration(weeks: 2, days: 1, minutes: 5));
+      expect(isoDuration.toSeconds(), 1296300);
+      expect(isoDurationNullable, isNotNull);
+
       input = 'P5Y';
       isoDuration = IsoDuration.parse(input);
       isoDurationNullable = IsoDuration.tryParse(input);
