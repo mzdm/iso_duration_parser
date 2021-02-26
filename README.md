@@ -1,8 +1,8 @@
 # iso_duration_parser
 
-[![pub package](https://img.shields.io/pub/v/iso_duration_parser.svg)](https://pub.dev/packages/iso_duration_parser)
+[![pub package](https://img.shields.io/pub/v/iso_duration_parser.svg)](https://pub.dev/packages/iso_duration_parser) ![tests](https://github.com/mzdm/iso_duration_parser/actions/workflows/main.yml/badge.svg)
 
-A package which parses [ISO 8061 Duration](https://en.wikipedia.org/wiki/ISO_8601#Durations).
+A package which parses [ISO 8061 Duration](https://en.wikipedia.org/wiki/ISO_8601#Durations) PnYnMnDTnHnMnS format.
 
 ## Usage
 
@@ -12,29 +12,33 @@ A simple usage example:
 import 'package:iso_duration_parser/iso_duration_parser.dart';
 
 void main() {
-  final dur = IsoDuration.tryParse('PT12H30M50.4S')!;
-  dur.inHours; // 12.0
-  dur.inMinutes; // 30
-  dur.inSeconds; // 50.4
+  final dur = IsoDuration.parse('PT12H30M50.4S');
+  dur.hours; // 12.0
+  dur.minutes; // 30
+  dur.seconds; // 50.4
+  dur.toSeconds(); // 45054.5
 
-  final dur2 = IsoDuration.tryParse('PT36H')!;
-  dur2.inDays; // 0
-  dur2.inHours; // 36.0
-  dur2.inMinutes; // 0
-  dur2.inSeconds; // 0
+  final dur2 = IsoDuration.parse('PT36H');
+  dur2.days; // 0
+  dur2.hours; // 36.0
+  dur2.minutes; // 0
+  dur2.seconds; // 0
+  dur2.toSeconds(); // 129600.0
 
-  IsoDuration.tryParse('P5Y'); // IsoDuration{inYears: 5, inMonths: 0, inWeeks: 0, inDays: 0, inHours: 0, inMinutes: 0, inSeconds: 0};
-  IsoDuration.tryParse('P3Y6M4DT12H30M5S'); // IsoDuration{inYears: 3, inMonths: 6, inWeeks: 0, inDays: 4, inHours: 12, inMinutes: 30, inSeconds: 5};
+  final dur3 = IsoDuration.parse('P5Y'); // IsoDuration{years: 5, months: 0, weeks: 0, days: 0, hours: 0, minutes: 0, seconds: 0};
+  //dur3.toSeconds(); // assertion error, years and months must be equal to 0
+
+  IsoDuration.parse('P3Y6M4DT12H30M5S'); // IsoDuration{years: 3, months: 6, weeks: 0, days: 4, hours: 12, minutes: 30, seconds: 5};
 
   // can parse decimal:
-  IsoDuration.tryParse('PT8M40.215S'); // IsoDuration{inYears: 0, inMonths: 0, inWeeks: 0, inDays: 0, inHours: 0, inMinutes: 8, inSeconds: 40.215};
+  IsoDuration.parse('PT8M40.215S'); // IsoDuration{years: 0, months: 0, weeks: 0, days: 0, hours: 0, minutes: 8, seconds: 40.215};
 
   try {
-    IsoDuration.parse('P50.M'); // invalid input in parse throws FormatException
-  } catch (e) {
-    print(e);
+    IsoDuration.parse('P 50M');
+  } on FormatException {
+    // invalid input in parse throws FormatException
   }
-  IsoDuration.tryParse('P50.M'); // invalid input in tryParse returns null
+  IsoDuration.tryParse('P 50M'); // invalid input in tryParse returns null
 }
 ```
 
@@ -56,7 +60,7 @@ The time interval is specified in the following form `PnYnMnDTnHnMnS` where:</br
 - nM indicates the number of minutes</br>
 - nS indicates the number of seconds</br>
 
-... [read more](http://www.datypic.com/sc/xsd/t-xsd_duration.html)
+... [read more](https://www.w3schools.com/xml/schema_dtypes_date.asp)
 
 ## Features and bugs
 

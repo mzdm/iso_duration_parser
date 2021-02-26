@@ -14,60 +14,74 @@ void main() {
       expect(
         isoDuration,
         IsoDuration(
-          inYears: 0,
-          inMonths: 0,
-          inWeeks: 0,
-          inDays: 0,
-          inHours: 0,
-          inMinutes: 10,
-          inSeconds: 0,
+          years: 0,
+          months: 0,
+          weeks: 0,
+          days: 0,
+          hours: 0,
+          minutes: 10,
+          seconds: 0,
         ),
       );
       expect(isoDuration.isZero, false);
+      expect(isoDuration.toSeconds(), 600);
       expect(isoDurationNullable, isNotNull);
       expect(isoDuration, isoDurationNullable);
 
       input = 'P0M';
       isoDuration = IsoDuration.parse(input);
       isoDurationNullable = IsoDuration.tryParse(input);
-      expect(isoDuration, IsoDuration(inMonths: 0));
+      expect(isoDuration, IsoDuration(months: 0));
       expect(isoDuration, IsoDuration());
       expect(isoDuration.isZero, true);
+      expect(isoDuration.toSeconds(), 0);
       expect(isoDurationNullable, isNotNull);
       expect(isoDuration, isoDurationNullable);
 
       input = 'PT0S';
       isoDuration = IsoDuration.parse(input);
       isoDurationNullable = IsoDuration.tryParse(input);
-      expect(isoDuration, IsoDuration(inSeconds: 0));
+      expect(isoDuration, IsoDuration(seconds: 0));
       expect(isoDuration, IsoDuration());
       expect(isoDuration.isZero, true);
+      expect(isoDuration.toSeconds(), 0);
       expect(isoDurationNullable, isNotNull);
       expect(isoDuration, isoDurationNullable);
 
       input = 'P4M';
       isoDuration = IsoDuration.parse(input);
       isoDurationNullable = IsoDuration.tryParse(input);
-      expect(isoDuration, IsoDuration(inMonths: 4));
+      expect(isoDuration, IsoDuration(months: 4));
+      expect(() => isoDuration.toSeconds(), throwsA(isA<AssertionError>()));
       expect(isoDurationNullable, isNotNull);
 
       input = 'P4M2W';
       isoDuration = IsoDuration.parse(input);
       isoDurationNullable = IsoDuration.tryParse(input);
-      expect(isoDuration, IsoDuration(inMonths: 4, inWeeks: 2));
+      expect(isoDuration, IsoDuration(months: 4, weeks: 2));
+      expect(() => isoDuration.toSeconds(), throwsA(isA<AssertionError>()));
+      expect(isoDurationNullable, isNotNull);
+
+      input = 'P2W1DT5M';
+      isoDuration = IsoDuration.parse(input);
+      isoDurationNullable = IsoDuration.tryParse(input);
+      expect(isoDuration, IsoDuration(weeks: 2, days: 1, minutes: 5));
+      expect(isoDuration.toSeconds(), 1296300);
       expect(isoDurationNullable, isNotNull);
 
       input = 'P5Y';
       isoDuration = IsoDuration.parse(input);
       isoDurationNullable = IsoDuration.tryParse(input);
-      expect(isoDuration, IsoDuration(inYears: 5));
+      expect(isoDuration, IsoDuration(years: 5));
+      expect(() => isoDuration.toSeconds(), throwsA(isA<AssertionError>()));
       expect(isoDurationNullable, isNotNull);
 
       input = 'P5Y2M10D';
       isoDuration = IsoDuration.parse(input);
       isoDurationNullable = IsoDuration.tryParse(input);
-      expect(isoDuration, IsoDuration(inYears: 5, inMonths: 2, inDays: 10));
+      expect(isoDuration, IsoDuration(years: 5, months: 2, days: 10));
       expect(isoDuration.isZero, false);
+      expect(() => isoDuration.toSeconds(), throwsA(isA<AssertionError>()));
       expect(isoDurationNullable, isNotNull);
 
       input = 'P3Y6M4DT12H30M5S';
@@ -77,89 +91,100 @@ void main() {
       expect(
         isoDuration,
         IsoDuration(
-          inYears: 3,
-          inMonths: 6,
-          inWeeks: 0,
-          inDays: 4,
-          inHours: 12,
-          inMinutes: 30,
-          inSeconds: 5,
+          years: 3,
+          months: 6,
+          weeks: 0,
+          days: 4,
+          hours: 12,
+          minutes: 30,
+          seconds: 5,
         ),
       );
+      expect(() => isoDuration.toSeconds(), throwsA(isA<AssertionError>()));
       expect(isoDurationNullable, isNotNull);
       expect(isoDuration, isoDurationNullable);
 
       input = 'P1DT12H';
       isoDuration = IsoDuration.parse(input);
       isoDurationNullable = IsoDuration.tryParse(input);
-      expect(isoDuration, IsoDuration(inDays: 1, inHours: 12));
+      expect(isoDuration, IsoDuration(days: 1, hours: 12));
+      expect(isoDuration.toSeconds(), 129600);
       expect(isoDurationNullable, isNotNull);
 
       input = 'PT15H';
       isoDuration = IsoDuration.parse(input);
       isoDurationNullable = IsoDuration.tryParse(input);
-      expect(isoDuration, IsoDuration(inHours: 15));
+      expect(isoDuration, IsoDuration(hours: 15));
+      expect(isoDuration.toSeconds(), 54000);
       expect(isoDurationNullable, isNotNull);
 
       input = 'PT36H';
       isoDuration = IsoDuration.parse(input);
       isoDurationNullable = IsoDuration.tryParse(input);
-      expect(isoDuration, IsoDuration(inHours: 36));
+      expect(isoDuration, IsoDuration(hours: 36));
+      expect(isoDuration.toSeconds(), 129600);
       expect(isoDurationNullable, isNotNull);
 
       input = 'PT8H15M';
       isoDuration = IsoDuration.parse(input);
       isoDurationNullable = IsoDuration.tryParse(input);
-      expect(isoDuration, IsoDuration(inHours: 8, inMinutes: 15));
+      expect(isoDuration, IsoDuration(hours: 8, minutes: 15));
+      expect(isoDuration.toSeconds(), 29700);
       expect(isoDurationNullable, isNotNull);
 
       input = 'PT2H25M';
       isoDuration = IsoDuration.parse(input);
       isoDurationNullable = IsoDuration.tryParse(input);
-      expect(isoDuration, IsoDuration(inHours: 2, inMinutes: 25));
+      expect(isoDuration, IsoDuration(hours: 2, minutes: 25));
+      expect(isoDuration.toSeconds(), 8700);
       expect(isoDurationNullable, isNotNull);
 
       input = 'PT16H35M';
       isoDuration = IsoDuration.parse(input);
       isoDurationNullable = IsoDuration.tryParse(input);
-      expect(isoDuration, IsoDuration(inHours: 16, inMinutes: 35));
+      expect(isoDuration, IsoDuration(hours: 16, minutes: 35));
+      expect(isoDuration.toSeconds(), 59700);
       expect(isoDurationNullable, isNotNull);
     });
 
     test('decimal input', () {
       input = 'PT8M40.215S';
       isoDuration = IsoDuration.parse(input);
+      isoDurationNullable = IsoDuration.tryParse(input);
       expect(
         isoDuration,
         IsoDuration(
-          inYears: 0,
-          inMonths: 0,
-          inWeeks: 0,
-          inDays: 0,
-          inHours: 0,
-          inMinutes: 8,
-          inSeconds: 40.215,
+          years: 0,
+          months: 0,
+          weeks: 0,
+          days: 0,
+          hours: 0,
+          minutes: 8,
+          seconds: 40.215,
         ),
       );
-      isoDurationNullable = IsoDuration.tryParse(input);
+      expect(isoDuration.toSeconds(), 520.215);
       expect(isoDurationNullable, isNotNull);
 
       input = 'PT0.5S';
       isoDuration = IsoDuration.parse(input);
       isoDurationNullable = IsoDuration.tryParse(input);
-      expect(isoDuration, IsoDuration(inSeconds: 0.5));
+      expect(isoDuration, IsoDuration(seconds: 0.5));
+      expect(isoDuration.toSeconds(), 0.5);
       expect(isoDurationNullable, isNotNull);
 
       input = 'PT0,5S';
       isoDuration = IsoDuration.parse(input);
       isoDurationNullable = IsoDuration.tryParse(input);
-      expect(isoDuration, IsoDuration(inSeconds: 0.5));
+      expect(isoDuration, IsoDuration(seconds: 0.5));
+      expect(isoDuration.toSeconds(), 0.5);
       expect(isoDurationNullable, isNotNull);
 
       input = 'P0.5Y';
       isoDuration = IsoDuration.parse(input);
       isoDurationNullable = IsoDuration.tryParse(input);
-      expect(isoDuration, IsoDuration(inYears: 0.5));
+      expect(isoDuration, IsoDuration(years: 0.5));
+      expect(() => isoDuration.toSeconds(), throwsA(isA<AssertionError>()));
       expect(isoDurationNullable, isNotNull);
     });
 
@@ -167,7 +192,7 @@ void main() {
     // test('negative values', () {
     //   input = '-P10D';
     //   isoDuration = IsoDuration.parse(input);
-    //   expect(isoDuration, IsoDuration(inDays: -10));
+    //   expect(isoDuration, IsoDuration(days: -10));
     // });
   });
 
@@ -182,7 +207,7 @@ void main() {
       expect(IsoDuration.tryParse(input), null);
     });
 
-    test('minus is not before P', () {
+    test('minus must not be after P', () {
       input = 'P-10M';
       expect(() => IsoDuration.parse(input), throwsA(isA<FormatException>()));
       expect(IsoDuration.tryParse(input), null);
@@ -196,7 +221,7 @@ void main() {
       expect(IsoDuration.tryParse(input), null);
     });
 
-    test('T must must be present when usng hrs, mins or secs', () {
+    test('T must must be present when using hrs, mins or secs', () {
       input = 'P2H';
       expect(() => IsoDuration.parse(input), throwsA(isA<FormatException>()));
       expect(IsoDuration.tryParse(input), null);
@@ -220,6 +245,12 @@ void main() {
       expect(IsoDuration.tryParse(input), null);
     });
 
+    test('contains empty space', () {
+      input = 'P 5M';
+      expect(() => IsoDuration.parse(input), throwsA(isA<FormatException>()));
+      expect(IsoDuration.tryParse(input), null);
+    });
+
     test('missing P literal', () {
       input = '5Y1M';
       expect(() => IsoDuration.parse(input), throwsA(isA<FormatException>()));
@@ -228,6 +259,24 @@ void main() {
 
     test('incorrect order (M before Y)', () {
       input = 'P2M5Y';
+      expect(() => IsoDuration.parse(input), throwsA(isA<FormatException>()));
+      expect(IsoDuration.tryParse(input), null);
+    });
+
+    test('random unrelated input', () {
+      input = '_';
+      expect(() => IsoDuration.parse(input), throwsA(isA<FormatException>()));
+      expect(IsoDuration.tryParse(input), null);
+
+      input = '';
+      expect(() => IsoDuration.parse(input), throwsA(isA<FormatException>()));
+      expect(IsoDuration.tryParse(input), null);
+
+      input = ' ';
+      expect(() => IsoDuration.parse(input), throwsA(isA<FormatException>()));
+      expect(IsoDuration.tryParse(input), null);
+
+      input = 'PnYnMnDTnHnMnS';
       expect(() => IsoDuration.parse(input), throwsA(isA<FormatException>()));
       expect(IsoDuration.tryParse(input), null);
     });
