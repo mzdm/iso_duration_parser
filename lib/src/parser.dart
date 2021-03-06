@@ -118,23 +118,42 @@ class IsoDuration {
     final matches = regExp.matchAsPrefix(input);
 
     if (matches != null) {
-      final y = matches.group(1)?.replaceFirst('Y', '')._replaceComma() ?? '';
-      final m = matches.group(2)?.replaceFirst('M', '')._replaceComma() ?? '';
-      final w = matches.group(3)?.replaceFirst('W', '')._replaceComma() ?? '';
+      final y = matches.group(1)?.replaceFirst('Y', '')._replaceComma();
+      final m = matches.group(2)?.replaceFirst('M', '')._replaceComma();
+      final w = matches.group(3)?.replaceFirst('W', '')._replaceComma();
 
-      final d = matches.group(4)?.replaceFirst('D', '')._replaceComma() ?? '';
-      final hrs = matches.group(6)?.replaceFirst('H', '')._replaceComma() ?? '';
-      final min = matches.group(7)?.replaceFirst('M', '')._replaceComma() ?? '';
-      final sec = matches.group(8)?.replaceFirst('S', '')._replaceComma() ?? '';
+      final d = matches.group(4)?.replaceFirst('D', '')._replaceComma();
+      final hrs = matches.group(6)?.replaceFirst('H', '')._replaceComma();
+      final min = matches.group(7)?.replaceFirst('M', '')._replaceComma();
+      final sec = matches.group(8)?.replaceFirst('S', '')._replaceComma();
+
+      // check if some input was matched but has incorrect formatting
+      if (<String?>[y, m, w, d, hrs, min, sec].any(
+        (e) {
+          if (e == null) return false;
+          if (double.tryParse(e) == null) return true;
+          return false;
+        },
+      )) {
+        return null;
+      }
+
+      final years = double.tryParse(y ?? '');
+      final months = double.tryParse(m ?? '');
+      final weeks = double.tryParse(w ?? '');
+      final days = double.tryParse(d ?? '');
+      final hours = double.tryParse(hrs ?? '');
+      final minutes = double.tryParse(min ?? '');
+      final seconds = double.tryParse(sec ?? '');
 
       return IsoDuration(
-        years: double.tryParse(y) ?? 0,
-        months: double.tryParse(m) ?? 0,
-        weeks: double.tryParse(w) ?? 0,
-        days: double.tryParse(d) ?? 0,
-        hours: double.tryParse(hrs) ?? 0,
-        minutes: double.tryParse(min) ?? 0,
-        seconds: double.tryParse(sec) ?? 0,
+        years: years ?? 0,
+        months: months ?? 0,
+        weeks: weeks ?? 0,
+        days: days ?? 0,
+        hours: hours ?? 0,
+        minutes: minutes ?? 0,
+        seconds: seconds ?? 0,
       );
     }
     return null;
