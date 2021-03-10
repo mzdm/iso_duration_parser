@@ -9,7 +9,7 @@ jobs:
       - name: Flutter action
         uses: dart-lang/setup-dart@v0.3
         with:
-          sdk: '2.12.0-29.10.beta'
+          sdk: '2.12.0'
       - name: Install dependencies
         run: dart pub get
       - name: Run tests
