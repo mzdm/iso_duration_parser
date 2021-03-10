@@ -1,5 +1,8 @@
 const _pattern =
-    r'^P(?!$)(\d+(?:\.\d+)?Y)?(\d+(?:\.\d+)?M)?(\d+(?:\.\d+)?W)?(\d+(?:\.\d+)?D)?(T(?=\d)(\d+(?:\.\d+)?H)?(\d+(?:\.\d+)?M)?(\d+(?:[\.\,]\d+)?S)?)?$';
+    r'^(-)?P(?!$)(\d+(?:[.,]\d+)?Y)?(\d+(?:[.,]\d+)?M)?(\d+(?:[.,]\d+)?W)?(\d+(?:[.,]\d+)?D)?(T(?=\d)(\d+(?:[.,]\d+)?H)?(\d+(?:[.,]\d+)?M)?(\d+(?:[.,]\d+)?S)?)?$';
+
+const _secsInDay = 86400;
+const _secsInHour = 3600;
 
 /// [IsoDuration] - ISO 8061 Duration Data Type
 ///
@@ -97,6 +100,24 @@ class IsoDuration {
         seconds
       ].every((element) => element == 0);
 
+  /// Returns `true` if the [IsoDuration] is negative.
+  ///
+  /// An example format of the parsed negative [IsoDuration]:
+  /// ```
+  /// -PT15H
+  /// ```
+  ///
+  /// `Minus` operator is allowed only before the literal `P`.
+  bool get isNegative => <double>[
+        years,
+        months,
+        weeks,
+        days,
+        hours,
+        minutes,
+        seconds
+      ].any((element) => element < 0);
+
   /// Parses the ISO 8601 - Duration. If the operation was not successful then
   /// it throws [FormatException].
   ///
@@ -129,20 +150,20 @@ class IsoDuration {
     final matches = regExp.matchAsPrefix(input);
 
     if (matches != null) {
-      final y = matches.group(1)?.replaceFirst('Y', '')._replaceComma();
-      final m = matches.group(2)?.replaceFirst('M', '')._replaceComma();
-      final w = matches.group(3)?.replaceFirst('W', '')._replaceComma();
+      final y = matches.group(2)?.replaceFirst('Y', '').replaceComma();
+      final m = matches.group(3)?.replaceFirst('M', '').replaceComma();
+      final w = matches.group(4)?.replaceFirst('W', '').replaceComma();
 
-      final d = matches.group(4)?.replaceFirst('D', '')._replaceComma();
-      final hrs = matches.group(6)?.replaceFirst('H', '')._replaceComma();
-      final min = matches.group(7)?.replaceFirst('M', '')._replaceComma();
-      final sec = matches.group(8)?.replaceFirst('S', '')._replaceComma();
+      final d = matches.group(5)?.replaceFirst('D', '').replaceComma();
+      final hrs = matches.group(7)?.replaceFirst('H', '').replaceComma();
+      final min = matches.group(8)?.replaceFirst('M', '').replaceComma();
+      final sec = matches.group(9)?.replaceFirst('S', '').replaceComma();
 
-      // check if some input was matched but has incorrect formatting
+      // checks if some input was matched but in some case had an incorrect format
       if (<String?>[y, m, w, d, hrs, min, sec].any(
-        (e) {
-          if (e == null) return false;
-          if (double.tryParse(e) == null) return true;
+        (element) {
+          if (element == null) return false;
+          if (double.tryParse(element) == null) return true;
           return false;
         },
       )) {
@@ -157,14 +178,17 @@ class IsoDuration {
       final minutes = double.tryParse(min ?? '');
       final seconds = double.tryParse(sec ?? '');
 
+      final isNegative = matches.group(1) == '-';
+      final multipl = isNegative ? -1 : 1;
+
       return IsoDuration(
-        years: years ?? 0,
-        months: months ?? 0,
-        weeks: weeks ?? 0,
-        days: days ?? 0,
-        hours: hours ?? 0,
-        minutes: minutes ?? 0,
-        seconds: seconds ?? 0,
+        years: (years ?? 0) * multipl,
+        months: (months ?? 0) * multipl,
+        weeks: (weeks ?? 0) * multipl,
+        days: (days ?? 0) * multipl,
+        hours: (hours ?? 0) * multipl,
+        minutes: (minutes ?? 0) * multipl,
+        seconds: (seconds ?? 0) * multipl,
       );
     }
     return null;
@@ -183,16 +207,15 @@ class IsoDuration {
   /// dur.toSeconds(); // 3725.5
   /// ```
   double toSeconds() {
-    assert(years == 0 && months == 0,
-        'years and months values of the IsoDuration object must be 0!');
-    const secsInDay = 86400;
-    const secsInHour = 3600;
-
-    final weeksInSecs = weeks * secsInDay * 7;
-    final daysInSecs = days * secsInDay;
-    final hrsInSecs = hours * secsInHour;
-    final minsInSecs = minutes * 60;
-    return weeksInSecs + daysInSecs + hrsInSecs + minsInSecs + seconds;
+    assert(
+      years == 0 && months == 0,
+      'years and months values of the IsoDuration object must be 0!',
+    );
+    final weeksToSecs = weeks * _secsInDay * 7;
+    final daysToSecs = days * _secsInDay;
+    final hrsToSecs = hours * _secsInHour;
+    final minsToSecs = minutes * 60;
+    return weeksToSecs + daysToSecs + hrsToSecs + minsToSecs + seconds;
   }
 
   /// This method returns a [String] value from the [IsoDuration] object in
@@ -237,6 +260,6 @@ class IsoDuration {
       seconds.hashCode;
 }
 
-extension IsoDurationStringExt on String {
-  String _replaceComma() => replaceFirst(',', '.');
+extension _IsoDurationStringExt on String {
+  String replaceComma() => replaceFirst(',', '.');
 }
