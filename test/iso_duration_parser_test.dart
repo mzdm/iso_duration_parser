@@ -24,6 +24,7 @@ void main() {
           seconds: 0,
         ),
       );
+      expect(isoDuration.toIso(), input);
       expect(isoDuration.isZero, false);
       expect(isoDuration.isNegative, false);
       expect(isoDuration.toSeconds(), 600);
@@ -35,6 +36,7 @@ void main() {
       isoDuration = IsoDuration.parse(input);
       expect(isoDuration, IsoDuration(months: 0));
       expect(isoDuration, IsoDuration());
+      expect(isoDuration.toIso(), 'PT0S');
       expect(isoDuration.isZero, true);
       expect(isoDuration.isNegative, false);
       expect(isoDuration.toSeconds(), 0);
@@ -46,6 +48,7 @@ void main() {
       isoDuration = IsoDuration.parse(input);
       expect(isoDuration, IsoDuration(seconds: 0));
       expect(isoDuration, IsoDuration());
+      expect(isoDuration.toIso(), input);
       expect(isoDuration.isZero, true);
       expect(isoDuration.isNegative, false);
       expect(isoDuration.toSeconds(), 0);
@@ -56,6 +59,7 @@ void main() {
       expect(isoDurationNullable, isNotNull);
       isoDuration = IsoDuration.parse(input);
       expect(isoDuration, IsoDuration(months: 4));
+      expect(isoDuration.toIso(), input);
       expect(isoDuration.isNegative, false);
       expect(() => isoDuration.toSeconds(), throwsA(isA<AssertionError>()));
 
@@ -64,6 +68,7 @@ void main() {
       expect(isoDurationNullable, isNotNull);
       isoDuration = IsoDuration.parse(input);
       expect(isoDuration, IsoDuration(months: 4, weeks: 2));
+      expect(isoDuration.toIso(), input);
       expect(isoDuration.isNegative, false);
       expect(() => isoDuration.toSeconds(), throwsA(isA<AssertionError>()));
 
@@ -72,6 +77,7 @@ void main() {
       expect(isoDurationNullable, isNotNull);
       isoDuration = IsoDuration.parse(input);
       expect(isoDuration, IsoDuration(weeks: 2, days: 1, minutes: 5));
+      expect(isoDuration.toIso(), input);
       expect(isoDuration.toSeconds(), 1296300);
 
       input = 'P5Y';
@@ -79,6 +85,7 @@ void main() {
       expect(isoDurationNullable, isNotNull);
       isoDuration = IsoDuration.parse(input);
       expect(isoDuration, IsoDuration(years: 5));
+      expect(isoDuration.toIso(), input);
       expect(isoDuration.isNegative, false);
       expect(() => isoDuration.toSeconds(), throwsA(isA<AssertionError>()));
 
@@ -87,6 +94,7 @@ void main() {
       expect(isoDurationNullable, isNotNull);
       isoDuration = IsoDuration.parse(input);
       expect(isoDuration, IsoDuration(years: 5, months: 2, days: 10));
+      expect(isoDuration.toIso(), input);
       expect(isoDuration.isZero, false);
       expect(isoDuration.isNegative, false);
       expect(() => isoDuration.toSeconds(), throwsA(isA<AssertionError>()));
@@ -95,6 +103,7 @@ void main() {
       isoDurationNullable = IsoDuration.tryParse(input);
       expect(isoDurationNullable, isNotNull);
       isoDuration = IsoDuration.parse(input);
+      expect(isoDuration.toIso(), input);
       expect(isoDuration.isZero, false);
       expect(isoDuration.isNegative, false);
       expect(
@@ -117,6 +126,7 @@ void main() {
       expect(isoDurationNullable, isNotNull);
       isoDuration = IsoDuration.parse(input);
       expect(isoDuration, IsoDuration(days: 1, hours: 12));
+      expect(isoDuration.toIso(), input);
       expect(isoDuration.isNegative, false);
       expect(isoDuration.toSeconds(), 129600);
 
@@ -125,6 +135,7 @@ void main() {
       expect(isoDurationNullable, isNotNull);
       isoDuration = IsoDuration.parse(input);
       expect(isoDuration, IsoDuration(hours: 15));
+      expect(isoDuration.toIso(), input);
       expect(isoDuration.isNegative, false);
       expect(isoDuration.toSeconds(), 54000);
 
@@ -133,6 +144,7 @@ void main() {
       expect(isoDurationNullable, isNotNull);
       isoDuration = IsoDuration.parse(input);
       expect(isoDuration, IsoDuration(hours: 36));
+      expect(isoDuration.toIso(), input);
       expect(isoDuration.isNegative, false);
       expect(isoDuration.toSeconds(), 129600);
 
@@ -141,6 +153,7 @@ void main() {
       expect(isoDurationNullable, isNotNull);
       isoDuration = IsoDuration.parse(input);
       expect(isoDuration, IsoDuration(hours: 8, minutes: 15));
+      expect(isoDuration.toIso(), input);
       expect(isoDuration.isNegative, false);
       expect(isoDuration.toSeconds(), 29700);
 
@@ -149,6 +162,7 @@ void main() {
       expect(isoDurationNullable, isNotNull);
       isoDuration = IsoDuration.parse(input);
       expect(isoDuration, IsoDuration(hours: 2, minutes: 25));
+      expect(isoDuration.toIso(), input);
       expect(isoDuration.isNegative, false);
       expect(isoDuration.toSeconds(), 8700);
 
@@ -157,6 +171,7 @@ void main() {
       expect(isoDurationNullable, isNotNull);
       isoDuration = IsoDuration.parse(input);
       expect(isoDuration, IsoDuration(hours: 16, minutes: 35));
+      expect(isoDuration.toIso(), input);
       expect(isoDuration.isNegative, false);
       expect(isoDuration.toSeconds(), 59700);
 
@@ -165,6 +180,7 @@ void main() {
       expect(isoDurationNullable, isNotNull);
       isoDuration = IsoDuration.parse(input);
       expect(isoDuration, IsoDuration(days: 10));
+      expect(isoDuration.toIso(), input);
       expect(isoDuration.isZero, false);
       expect(isoDuration.isNegative, false);
       expect(isoDuration.toSeconds(), 864000);
@@ -188,6 +204,7 @@ void main() {
           seconds: 0,
         ),
       );
+      expect(isoDuration.toIso(), input);
       expect(isoDuration.isZero, false);
       expect(isoDuration.isNegative, true);
       expect(isoDuration.toSeconds(), -600);
@@ -199,6 +216,7 @@ void main() {
       isoDuration = IsoDuration.parse(input);
       expect(isoDuration, IsoDuration(months: 0));
       expect(isoDuration, IsoDuration());
+      expect(isoDuration.toIso(), 'PT0S');
       expect(isoDuration.isZero, true);
       expect(isoDuration.isNegative, false);
       expect(isoDuration.toSeconds(), 0);
@@ -210,6 +228,7 @@ void main() {
       isoDuration = IsoDuration.parse(input);
       expect(isoDuration, IsoDuration(seconds: 0));
       expect(isoDuration, IsoDuration());
+      expect(isoDuration.toIso(), 'PT0S');
       expect(isoDuration.isZero, true);
       expect(isoDuration.isNegative, false);
       expect(isoDuration.toSeconds(), 0);
@@ -220,6 +239,7 @@ void main() {
       expect(isoDurationNullable, isNotNull);
       isoDuration = IsoDuration.parse(input);
       expect(isoDuration, IsoDuration(months: -4));
+      expect(isoDuration.toIso(), input);
       expect(isoDuration.isNegative, true);
       expect(() => isoDuration.toSeconds(), throwsA(isA<AssertionError>()));
 
@@ -228,6 +248,7 @@ void main() {
       expect(isoDurationNullable, isNotNull);
       isoDuration = IsoDuration.parse(input);
       expect(isoDuration, IsoDuration(months: -4, weeks: -2));
+      expect(isoDuration.toIso(), input);
       expect(isoDuration.isNegative, true);
       expect(() => isoDuration.toSeconds(), throwsA(isA<AssertionError>()));
 
@@ -236,6 +257,7 @@ void main() {
       expect(isoDurationNullable, isNotNull);
       isoDuration = IsoDuration.parse(input);
       expect(isoDuration, IsoDuration(weeks: -2, days: -1, minutes: -5));
+      expect(isoDuration.toIso(), input);
       expect(isoDuration.toSeconds(), -1296300);
 
       input = '-P5Y';
@@ -243,6 +265,7 @@ void main() {
       expect(isoDurationNullable, isNotNull);
       isoDuration = IsoDuration.parse(input);
       expect(isoDuration, IsoDuration(years: -5));
+      expect(isoDuration.toIso(), input);
       expect(isoDuration.isNegative, true);
       expect(() => isoDuration.toSeconds(), throwsA(isA<AssertionError>()));
 
@@ -251,6 +274,7 @@ void main() {
       expect(isoDurationNullable, isNotNull);
       isoDuration = IsoDuration.parse(input);
       expect(isoDuration, IsoDuration(years: -5, months: -2, days: -10));
+      expect(isoDuration.toIso(), input);
       expect(isoDuration.isZero, false);
       expect(isoDuration.isNegative, true);
       expect(() => isoDuration.toSeconds(), throwsA(isA<AssertionError>()));
@@ -259,6 +283,7 @@ void main() {
       isoDurationNullable = IsoDuration.tryParse(input);
       expect(isoDurationNullable, isNotNull);
       isoDuration = IsoDuration.parse(input);
+      expect(isoDuration.toIso(), input);
       expect(isoDuration.isZero, false);
       expect(isoDuration.isNegative, true);
       expect(
@@ -281,6 +306,7 @@ void main() {
       expect(isoDurationNullable, isNotNull);
       isoDuration = IsoDuration.parse(input);
       expect(isoDuration, IsoDuration(days: -1, hours: -12));
+      expect(isoDuration.toIso(), input);
       expect(isoDuration.isNegative, true);
       expect(isoDuration.toSeconds(), -129600);
 
@@ -289,6 +315,7 @@ void main() {
       expect(isoDurationNullable, isNotNull);
       isoDuration = IsoDuration.parse(input);
       expect(isoDuration, IsoDuration(hours: -15));
+      expect(isoDuration.toIso(), input);
       expect(isoDuration.isNegative, true);
       expect(isoDuration.toSeconds(), -54000);
 
@@ -297,6 +324,7 @@ void main() {
       expect(isoDurationNullable, isNotNull);
       isoDuration = IsoDuration.parse(input);
       expect(isoDuration, IsoDuration(hours: -36));
+      expect(isoDuration.toIso(), input);
       expect(isoDuration.isNegative, true);
       expect(isoDuration.toSeconds(), -129600);
 
@@ -305,6 +333,7 @@ void main() {
       expect(isoDurationNullable, isNotNull);
       isoDuration = IsoDuration.parse(input);
       expect(isoDuration, IsoDuration(hours: -8, minutes: -15));
+      expect(isoDuration.toIso(), input);
       expect(isoDuration.isNegative, true);
       expect(isoDuration.toSeconds(), -29700);
 
@@ -313,6 +342,7 @@ void main() {
       expect(isoDurationNullable, isNotNull);
       isoDuration = IsoDuration.parse(input);
       expect(isoDuration, IsoDuration(hours: -2, minutes: -25));
+      expect(isoDuration.toIso(), input);
       expect(isoDuration.isNegative, true);
       expect(isoDuration.toSeconds(), -8700);
 
@@ -321,6 +351,7 @@ void main() {
       expect(isoDurationNullable, isNotNull);
       isoDuration = IsoDuration.parse(input);
       expect(isoDuration, IsoDuration(hours: -16, minutes: -35));
+      expect(isoDuration.toIso(), input);
       expect(isoDuration.isNegative, true);
       expect(isoDuration.toSeconds(), -59700);
 
@@ -329,6 +360,7 @@ void main() {
       expect(isoDurationNullable, isNotNull);
       isoDuration = IsoDuration.parse(input);
       expect(isoDuration, IsoDuration(days: -10));
+      expect(isoDuration.toIso(), input);
       expect(isoDuration.isZero, false);
       expect(isoDuration.isNegative, true);
       expect(isoDuration.toSeconds(), -864000);
@@ -340,6 +372,7 @@ void main() {
       isoDurationNullable = IsoDuration.tryParse(input);
       expect(isoDurationNullable, isNotNull);
       isoDuration = IsoDuration.parse(input);
+      expect(isoDuration.toIso(), input);
       expect(isoDuration.isNegative, false);
       expect(
         isoDuration,
@@ -360,6 +393,7 @@ void main() {
       expect(isoDurationNullable, isNotNull);
       isoDuration = IsoDuration.parse(input);
       expect(isoDuration, IsoDuration(seconds: 0.5));
+      expect(isoDuration.toIso(), input);
       expect(isoDuration.isNegative, false);
       expect(isoDuration.toSeconds(), 0.5);
 
@@ -368,6 +402,7 @@ void main() {
       expect(isoDurationNullable, isNotNull);
       isoDuration = IsoDuration.parse(input);
       expect(isoDuration, IsoDuration(seconds: 0.5));
+      expect(isoDuration.toIso(), 'PT0.5S');
       expect(isoDuration.isNegative, false);
       expect(isoDuration.toSeconds(), 0.5);
 
@@ -376,6 +411,7 @@ void main() {
       expect(isoDurationNullable, isNotNull);
       isoDuration = IsoDuration.parse(input);
       expect(isoDuration, IsoDuration(years: 0.5));
+      expect(isoDuration.toIso(), input);
       expect(isoDuration.isNegative, false);
       expect(() => isoDuration.toSeconds(), throwsA(isA<AssertionError>()));
 
@@ -384,6 +420,7 @@ void main() {
       expect(isoDurationNullable, isNotNull);
       isoDuration = IsoDuration.parse(input);
       expect(isoDuration, IsoDuration(minutes: 2.75));
+      expect(isoDuration.toIso(), input);
       expect(isoDuration.isNegative, false);
       expect(isoDuration.toSeconds(), 165);
 
@@ -392,6 +429,7 @@ void main() {
       expect(isoDurationNullable, isNotNull);
       isoDuration = IsoDuration.parse(input);
       expect(isoDuration, IsoDuration(minutes: 2.75));
+      expect(isoDuration.toIso(), 'PT2.75M');
       expect(isoDuration.isNegative, false);
       expect(isoDuration.toSeconds(), 165);
 
@@ -400,6 +438,7 @@ void main() {
       expect(isoDurationNullable, isNotNull);
       isoDuration = IsoDuration.parse(input);
       expect(isoDuration, IsoDuration(years: 1.5, months: 2.5));
+      expect(isoDuration.toIso(), 'P1.5Y2.5M');
       expect(isoDuration.isNegative, false);
 
       input = 'P2Y3.5M1W';
@@ -407,6 +446,7 @@ void main() {
       expect(isoDurationNullable, isNotNull);
       isoDuration = IsoDuration.parse(input);
       expect(isoDuration, IsoDuration(years: 2, months: 3.5, weeks: 1));
+      expect(isoDuration.toIso(), input);
       expect(isoDuration.isNegative, false);
     });
   });

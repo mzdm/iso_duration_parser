@@ -224,12 +224,40 @@ class IsoDuration {
   /// If any part is zero then it is omitted. If all parts are zero then it
   /// returns `PT0S`.
   ///
+  /// Decimal is separated with a dot.
+  ///
+  /// Example:
+  /// ```dart
+  /// final dur = IsoDuration(hours: 1, minutes: 2, seconds: 5.5);
+  /// dur.toIso(); // 'PT1H2M5.5S'
+  /// ```
+  ///
   /// See also:
   ///
   ///  * [Wikipedia, ISO_8601 Durations](https://en.wikipedia.org/wiki/ISO_8601#Durations)
   ///  * [XSD Duration Data Type](https://www.w3schools.com/xml/schema_dtypes_date.asp)
-  void toIso() {
-    print('Unimplemented method call: toIso() is not yet implemented.');
+  String toIso() {
+    if (isZero) {
+      return 'PT0S';
+    }
+
+    final strNegative = isNegative ? '-' : '';
+    final strBuffer = StringBuffer('${strNegative}P');
+
+    if (years != 0) strBuffer.write('${_delTrailingZero(years.inv())}Y');
+    if (months != 0) strBuffer.write('${_delTrailingZero(months.inv())}M');
+    if (weeks != 0) strBuffer.write('${_delTrailingZero(weeks.inv())}W');
+    if (days != 0) strBuffer.write('${_delTrailingZero(days.inv())}D');
+
+    if (<double>[hours, minutes, seconds].any((e) => e != 0)) {
+      strBuffer.write('T');
+
+      if (hours != 0) strBuffer.write('${_delTrailingZero(hours.inv())}H');
+      if (minutes != 0) strBuffer.write('${_delTrailingZero(minutes.inv())}M');
+      if (seconds != 0) strBuffer.write('${_delTrailingZero(seconds.inv())}S');
+    }
+
+    return strBuffer.toString();
   }
 
   @override
@@ -260,6 +288,18 @@ class IsoDuration {
       seconds.hashCode;
 }
 
+String _delTrailingZero(double n) {
+  final hasTrailingZero = n.truncateToDouble() == n;
+  if (hasTrailingZero) {
+    return n.toStringAsFixed(0);
+  }
+  return n.toString();
+}
+
 extension _IsoDurationStringExt on String {
   String replaceComma() => replaceFirst(',', '.');
+}
+
+extension _IsoDurationDoubleExt on double {
+  double inv() => this < 0 ? this * -1 : this;
 }
