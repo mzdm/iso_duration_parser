@@ -30,7 +30,7 @@ void main() {
 
   IsoDuration.parse('P3Y6M4DT12H30M5S'); // IsoDuration{years: 3, months: 6, weeks: 0, days: 4, hours: 12, minutes: 30, seconds: 5};
 
-  // can parse decimal:
+  // can parse decimal (accepts both comma and dots):
   IsoDuration.parse('PT8M40.215S'); // IsoDuration{years: 0, months: 0, weeks: 0, days: 0, hours: 0, minutes: 8, seconds: 40.215};
 
   try {

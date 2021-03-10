@@ -65,6 +65,17 @@ class IsoDuration {
   /// The duration part in seconds, if was given, otherwise defaults to 0.
   final double seconds;
 
+  /// Creates a new [IsoDuration] object where each value represents
+  /// an individual duration part.
+  ///
+  /// This [IsoDuration] is not like Dart's implementation of [Duration]
+  /// whose value is the sum of all individual parts.
+  ///
+  /// All arguments are 0 by default.
+  ///
+  /// See more:
+  ///
+  ///  * [IsoDuration] - ISO 8061 Duration Data Type
   const IsoDuration({
     this.years = 0,
     this.months = 0,
@@ -95,7 +106,7 @@ class IsoDuration {
   /// IsoDuration.parse('P5Y'); // IsoDuration{years: 5, months: 0, weeks: 0, days: 0, hours: 0, minutes: 0, seconds: 0};
   /// IsoDuration.parse('P3Y6M4DT12H30M5S'); // IsoDuration{years: 3, months: 6, weeks: 0, days: 4, hours: 12, minutes: 30, seconds: 5};
   ///
-  /// can parse also decimal:
+  /// can parse also decimal (accepts both comma and dots):
   /// IsoDuration.parse('PT8M40.215S'); // IsoDuration{years: 0, months: 0, weeks: 0, days: 0, hours: 0, minutes: 8, seconds: 40.215};
   /// ```
   ///
@@ -159,10 +170,10 @@ class IsoDuration {
     return null;
   }
 
-  /// Calculates total duration only in seconds from the [IsoDuration] object.
-  /// It is a sum of all individual parts, except [years] and [months].
+  /// Calculates total duration in seconds as a sum of all individual parts
+  /// (except [years] and [months]) from the [IsoDuration] object.
   ///
-  /// **Note:** values `years` and `months` of [IsoDuration] must be equal to 0.
+  /// Values `years` and `months` of [IsoDuration] **must be** equal to 0.
   /// Otherwise, it is not possible to accurately count the total of seconds.
   ///
   /// For example:
@@ -184,8 +195,6 @@ class IsoDuration {
     return weeksInSecs + daysInSecs + hrsInSecs + minsInSecs + seconds;
   }
 
-  /// TODO: Unimplemented: Possibility to convert back to ISO
-  ///
   /// This method returns a [String] value from the [IsoDuration] object in
   /// ISO 8601 - Duration (`PnYnMnDTnHnMnS` format).
   ///
