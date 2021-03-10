@@ -159,7 +159,7 @@ class IsoDuration {
       final min = matches.group(8)?.replaceFirst('M', '').replaceComma();
       final sec = matches.group(9)?.replaceFirst('S', '').replaceComma();
 
-      // checks if some input was matched but in some case had an incorrect format
+      // additional check if some input was wrongly matched
       if (<String?>[y, m, w, d, hrs, min, sec].any(
         (element) {
           if (element == null) return false;
@@ -203,7 +203,7 @@ class IsoDuration {
   /// For example:
   ///
   /// ```dart
-  /// final dur = IsoDuration(hours: 1, minutes: 2, seconds: 5.5)
+  /// final dur = IsoDuration(hours: 1, minutes: 2, seconds: 5.5);
   /// dur.toSeconds(); // 3725.5
   /// ```
   double toSeconds() {

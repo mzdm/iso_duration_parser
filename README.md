@@ -17,6 +17,7 @@ void main() {
   dur.minutes; // 30
   dur.seconds; // 50.4
   dur.toSeconds(); // 45054.5
+  dur.toIso(); // 'PT12H30M50.4S'
 
   final dur2 = IsoDuration.parse('PT36H');
   dur2.days; // 0
@@ -24,6 +25,7 @@ void main() {
   dur2.minutes; // 0
   dur2.seconds; // 0
   dur2.toSeconds(); // 129600.0
+  dur2.toIso(); // 'PT36H'
 
   final dur3 = IsoDuration.parse('P5Y'); // IsoDuration{years: 5, months: 0, weeks: 0, days: 0, hours: 0, minutes: 0, seconds: 0};
   //dur3.toSeconds(); // assertion error, years and months must be equal to 0
