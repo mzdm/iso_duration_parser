@@ -103,10 +103,11 @@ class IsoDuration {
   /// `Minus` operator is allowed only before the literal `P`.
   bool get isNegative => _allProperties.any((element) => element < 0);
 
-  // TODO:
+  /// Returns `true` if any property of the [IsoDuration] has decimals.
   bool get hasDecimals => _allProperties.any((element) => element.isDecimal());
 
-  // TODO:
+  /// Returns `true` if both [years] and [months] are equal to 0, meaning that
+  /// [toSeconds] method can be accurately calculated.
   bool get isPrecise => years == 0 && months == 0;
 
   List<double> get _allProperties => <double>[
@@ -198,7 +199,7 @@ class IsoDuration {
   /// Calculates total duration in seconds as a sum of all individual parts
   /// (except [years] and [months]) from the [IsoDuration] object.
   ///
-  /// Values `years` and `months` of [IsoDuration] **must be** equal to 0.
+  /// [years] and [months] of [IsoDuration] **must be** equal to 0.
   /// Otherwise, it is not possible to accurately count the total of seconds.
   ///
   /// For example:
@@ -261,7 +262,23 @@ class IsoDuration {
     return strBuffer.toString();
   }
 
-  // TODO:
+  /// Returns formatted String with a specified [format].
+  ///
+  /// Allowed format types:
+  /// - h, hh
+  /// - m, mm
+  /// - s, ss
+  ///
+  /// To use it as a format type wrap it with curly braces.
+  ///
+  /// Two character length format type, e.g. 'ss', adds a trailing zero at
+  /// the beginning if it is lesser than 10.
+  ///
+  /// Example:
+  /// ```dart
+  /// final dur = IsoDuration(hours: 2, minutes: 30);
+  /// dur.format('See you in {h} hours and {mm} minutes'); // 'See you in 2 hours and 30 minutes'
+  /// ```
   String format(String format) {
     final strBuffer = StringBuffer('');
 
@@ -274,7 +291,7 @@ class IsoDuration {
 
       var tempItem = item.replaceAll(RegExp('[{}]'), '');
       if (_TimeFormat.values.any((e) => e.describe() == tempItem)) {
-        strBuffer.write(getFormat(tempItem));
+        strBuffer.write(_getFormat(tempItem));
       } else {
         strBuffer.write(item);
       }
@@ -282,8 +299,7 @@ class IsoDuration {
     return strBuffer.toString();
   }
 
-  // TODO:
-  String getFormat(String format) {
+  String _getFormat(String format) {
     final isShort = format.length == 1;
     final value = _formatValueMap[isShort ? '$format$format' : format]!.toInt();
     return isShort ? value.toString() : _addLeadingZeroIfNeeded(value);
@@ -302,7 +318,18 @@ class IsoDuration {
     return value.toString();
   }
 
-  // TODO:
+  /// Adds current [IsoDuration] to a specified [dateTime] (or subtracts if
+  /// [isNegative] is `true`).
+  ///
+  /// Both [years] and [months] must not be decimal, otherwise it is not
+  /// possible to accurately calculate and return from it new [DateTime].
+  ///
+  /// Example:
+  /// ```dart
+  /// final dur = IsoDuration(hours: 2, minutes: 30);
+  /// final dateTime = DateTime(2021, 1, 20, 8); // 2021-01-20 08:00:00.000
+  /// dur.withDate(dateTime); // 2021-01-20 10:30:00.000
+  /// ```
   DateTime withDate(DateTime dateTime) {
     assert(
       !years.isDecimal() && !months.isDecimal(),
@@ -343,7 +370,17 @@ class IsoDuration {
     return newDate;
   }
 
-  // TODO:
+  /// Returns `true` if this [IsoDuration] this occurs after the `other`.
+  ///
+  /// Each [IsoDuration] is calculated as a sum of all properties and then
+  /// the duration is compared.
+  ///
+  /// Example:
+  /// ```dart
+  /// final dur = IsoDuration(hours: 1, minutes: 30);
+  /// final dur2 = IsoDuration(hours: 10, minutes: 0);
+  /// dur.isAfter(dur2); // false
+  /// ```
   bool isAfter(IsoDuration other) {
     if (this == other) return false;
     if (isNegative && !other.isNegative) return false;
@@ -352,7 +389,17 @@ class IsoDuration {
     return _isAfter(other);
   }
 
-  // TODO:
+  /// Returns `true` if this [IsoDuration] occurs before the `other`.
+  ///
+  /// Each [IsoDuration] is calculated as a sum of all properties and then
+  /// the duration is compared.
+  ///
+  /// Example:
+  /// ```dart
+  /// final dur = IsoDuration(hours: 1, minutes: 30);
+  /// final dur2 = IsoDuration(hours: 10, minutes: 0);
+  /// dur.isAfter(dur2); // true
+  /// ```
   bool isBefore(IsoDuration other) {
     if (this == other) return false;
     if (!isNegative && other.isNegative) return false;
@@ -361,7 +408,23 @@ class IsoDuration {
     return !_isAfter(other);
   }
 
-  // TODO: equals
+  /// Returns `true` if this [IsoDuration] occurs at the same time as `other`.
+  ///
+  /// This is different from == (equals), where all properties must be same,
+  /// not only the total duration.
+  ///
+  /// Each [IsoDuration] is calculated as a sum of all properties and then
+  /// the duration is compared.
+  ///
+  /// Example:
+  /// ```dart
+  /// final dur = IsoDuration(hours: 0, minutes: 60);
+  /// final dur2 = IsoDuration(hours: 1, minutes: 0);
+  /// final dur3 = IsoDuration(minutes: 60);
+  /// dur.isAtSameMomentAs(dur2); // true
+  /// dur == dur2; // false
+  /// dur == dur3; // true
+  /// ```
   bool isAtSameMomentAs(IsoDuration other) {
     if (this == other) return true;
     if (isPrecise && other.isPrecise) return toSeconds() == other.toSeconds();
