@@ -275,6 +275,115 @@ class IsoDuration {
     return strBuffer.toString();
   }
 
+  // TODO:
+  String? format(String format) {
+    
+  }
+
+  // TODO:
+  DateTime withDate(DateTime dateTime) {
+    assert(
+      !years.isDecimal() && !months.isDecimal(),
+      'Years and months must not be decimal!',
+    );
+
+    if (isZero) {
+      return dateTime;
+    }
+
+    if (isPrecise) {
+      final microseconds = (toSeconds().secsToMicrosecs()).truncate();
+      if (isNegative) {
+        final duration = Duration(microseconds: microseconds * -1);
+        return dateTime.subtract(duration);
+      }
+      return dateTime.add(Duration(microseconds: microseconds));
+    }
+
+    final newDate = DateTime(
+      dateTime.year + years.truncate(),
+      dateTime.month + months.truncate(),
+      dateTime.day,
+      dateTime.hour,
+      dateTime.minute,
+      dateTime.millisecond,
+      dateTime.microsecond,
+    );
+
+    final precisePart = copyWith(years: 0, months: 0);
+    final microseconds = precisePart.toSeconds().secsToMicrosecs().truncate();
+    if (isNegative) {
+      newDate.subtract(Duration(microseconds: microseconds * -1));
+    } else {
+      newDate.add(Duration(microseconds: microseconds));
+    }
+
+    return newDate;
+  }
+
+  // TODO:
+  bool isAfter(IsoDuration other) {
+    if (this == other) return false;
+    if (isNegative && !other.isNegative) return false;
+    if (!isNegative && other.isNegative) return true;
+    if (isPrecise && other.isPrecise) return toSeconds() > other.toSeconds();
+    return _isAfter(other);
+  }
+
+  // TODO:
+  bool isBefore(IsoDuration other) {
+    if (this == other) return false;
+    if (!isNegative && other.isNegative) return false;
+    if (isNegative && !other.isNegative) return true;
+    if (isPrecise && other.isPrecise) return toSeconds() < other.toSeconds();
+    return !_isAfter(other);
+  }
+
+  // TODO: equals
+  bool isAtSameMomentAs(IsoDuration other) {
+    if (this == other) return true;
+    if (isPrecise && other.isPrecise) return toSeconds() == other.toSeconds();
+    return _isAtSameMomentAs(other);
+  }
+
+  bool _isAfter(IsoDuration other) {
+    final testDate = DateTime(2000);
+    final date1 = withDate(testDate);
+    final date2 = other.withDate(testDate);
+
+    return date1.isAfter(date2);
+  }
+
+  bool _isAtSameMomentAs(IsoDuration other) {
+    final testDate = DateTime(2000);
+    final date1 = withDate(testDate);
+    final date2 = other.withDate(testDate);
+
+    return date1.isAtSameMomentAs(date2);
+  }
+
+  /// Creates a copy of this object with the given fields
+  /// replaced with the new values.
+  IsoDuration copyWith({
+    double? years,
+    double? months,
+    double? weeks,
+    double? days,
+    double? hours,
+    double? minutes,
+    double? seconds,
+  }) {
+    return IsoDuration(
+      years: years ?? this.years,
+      months: months ?? this.months,
+      weeks: weeks ?? this.weeks,
+      days: days ?? this.days,
+      hours: hours ?? this.hours,
+      minutes: minutes ?? this.minutes,
+      seconds: seconds ?? this.seconds,
+    );
+  }
+
   @override
   String toString() =>
       'IsoDuration{years: $years, months: $months, weeks: $weeks, days: $days, hours: $hours, minutes: $minutes, seconds: $seconds}';
