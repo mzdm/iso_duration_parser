@@ -91,15 +91,7 @@ class IsoDuration {
   });
 
   /// Returns `true` if all values of [IsoDuration] object are equal to 0.
-  bool get isZero => <double>[
-        years,
-        months,
-        weeks,
-        days,
-        hours,
-        minutes,
-        seconds
-      ].every((element) => element == 0);
+  bool get isZero => _allProperties.every((element) => element == 0);
 
   /// Returns `true` if the [IsoDuration] is negative.
   ///
@@ -109,29 +101,23 @@ class IsoDuration {
   /// ```
   ///
   /// `Minus` operator is allowed only before the literal `P`.
-  bool get isNegative => <double>[
+  bool get isNegative => _allProperties.any((element) => element < 0);
+
+  // TODO:
+  bool get hasDecimals => _allProperties.any((element) => element.isDecimal());
+
+  // TODO:
+  bool get isPrecise => years == 0 && months == 0;
+
+  List<double> get _allProperties => <double>[
         years,
         months,
         weeks,
         days,
         hours,
         minutes,
-        seconds
-      ].any((element) => element < 0);
-
-  // TODO:
-  bool get hasDecimals => <double>[
-    years,
-    months,
-    weeks,
-    days,
-    hours,
-    minutes,
-    seconds
-  ].any((element) => element.isDecimal());
-
-  // TODO:
-  bool get isPrecise => years == 0 && months == 0;
+        seconds,
+      ];
 
   /// Parses the ISO 8601 - Duration. If the operation was not successful then
   /// it throws [FormatException].
