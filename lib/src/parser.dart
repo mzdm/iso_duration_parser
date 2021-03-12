@@ -118,6 +118,20 @@ class IsoDuration {
         seconds
       ].any((element) => element < 0);
 
+  // TODO:
+  bool get hasDecimals => <double>[
+    years,
+    months,
+    weeks,
+    days,
+    hours,
+    minutes,
+    seconds
+  ].any((element) => element.isDecimal());
+
+  // TODO:
+  bool get isPrecise => years == 0 && months == 0;
+
   /// Parses the ISO 8601 - Duration. If the operation was not successful then
   /// it throws [FormatException].
   ///
