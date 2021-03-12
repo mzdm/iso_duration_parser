@@ -262,8 +262,44 @@ class IsoDuration {
   }
 
   // TODO:
-  String? format(String format) {
-    
+  String format(String format) {
+    final strBuffer = StringBuffer('');
+
+    final list = format.split(RegExp('(?={)|(?<=})'));
+    for (final item in list) {
+      if (!RegExp('({)[A-Za-z]{1,2}(})').hasMatch(item)) {
+        strBuffer.write(item);
+        continue;
+      }
+
+      var tempItem = item.replaceAll(RegExp('[{}]'), '');
+      if (_TimeFormat.values.any((e) => e.describe() == tempItem)) {
+        strBuffer.write(getFormat(tempItem));
+      } else {
+        strBuffer.write(item);
+      }
+    }
+    return strBuffer.toString();
+  }
+
+  // TODO:
+  String getFormat(String format) {
+    final isShort = format.length == 1;
+    final value = _formatValueMap[isShort ? '$format$format' : format]!.toInt();
+    return isShort ? value.toString() : _addLeadingZeroIfNeeded(value);
+  }
+
+  Map<String, double> get _formatValueMap => {
+    _TimeFormat.hh.describe(): hours,
+    _TimeFormat.mm.describe(): minutes,
+    _TimeFormat.ss.describe(): seconds,
+  };
+
+  String _addLeadingZeroIfNeeded(int value) {
+    if (value < 10) {
+      return '0$value';
+    }
+    return value.toString();
   }
 
   // TODO:
@@ -416,4 +452,13 @@ extension _IsoDurationDoubleExt on double {
   bool isDecimal() => this != truncateToDouble();
 
   double secsToMicrosecs() => this * _microsecsInSec;
+}
+
+enum _TimeFormat { h, hh, m, mm, s, ss }
+
+extension _TimeFormatExt on _TimeFormat {
+  String describe() =>
+      toString()
+          .split('.')
+          .last;
 }
