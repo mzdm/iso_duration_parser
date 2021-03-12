@@ -3,6 +3,7 @@ const _pattern =
 
 const _secsInDay = 86400;
 const _secsInHour = 3600;
+const _microsecsInSec = 1000000;
 
 /// [IsoDuration] - ISO 8061 Duration Data Type
 ///
@@ -222,8 +223,8 @@ class IsoDuration {
   /// ```
   double toSeconds() {
     assert(
-      years == 0 && months == 0,
-      'years and months values of the IsoDuration object must be 0!',
+      isPrecise,
+      'years and months values of the IsoDuration object must be equal to 0!',
     );
     final weeksToSecs = weeks * _secsInDay * 7;
     final daysToSecs = days * _secsInDay;
@@ -316,4 +317,8 @@ extension _IsoDurationStringExt on String {
 
 extension _IsoDurationDoubleExt on double {
   double inv() => this < 0 ? this * -1 : this;
+
+  bool isDecimal() => this != truncateToDouble();
+
+  double secsToMicrosecs() => this * _microsecsInSec;
 }
