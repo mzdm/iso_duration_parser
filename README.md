@@ -9,23 +9,26 @@ A package which parses [ISO 8061 Duration](https://en.wikipedia.org/wiki/ISO_860
 A simple usage example:
 
 ```dart
-import 'package:iso_duration_parser/iso_duration_parser.dart';
-
 void main() {
-  final dur = IsoDuration.parse('PT12H30M50.4S');
-  dur.hours; // 12.0
-  dur.minutes; // 30
-  dur.seconds; // 50.4
-  dur.toSeconds(); // 45054.5
-  dur.toIso(); // 'PT12H30M50.4S'
+  final dur = IsoDuration.parse('PT36H');
+  dur.days; // 0
+  dur.hours; // 36.0
+  dur.minutes; // 0
+  dur.seconds; // 0
+  dur.toSeconds(); // 129600.0
+  dur.toIso(); // 'PT36H'
+  final dateTime = DateTime(2021, 1, 20, 8); // 2021-01-20 08:00:00.000
+  dur.withDate(dateTime); // 2021-01-21 20:00:00.000
 
-  final dur2 = IsoDuration.parse('PT36H');
-  dur2.days; // 0
-  dur2.hours; // 36.0
-  dur2.minutes; // 0
-  dur2.seconds; // 0
-  dur2.toSeconds(); // 129600.0
-  dur2.toIso(); // 'PT36H'
+  final durFormat = IsoDuration.parse('PT4H5M');
+  durFormat.format('Call me in {hh}h {m}m'); // Call me in 04h 5m
+
+  final dur2 = IsoDuration.parse('PT12H30M50.4S');
+  dur2.hours; // 12.0
+  dur2.minutes; // 30
+  dur2.seconds; // 50.4
+  dur2.toSeconds(); // 45054.5
+  dur2.toIso(); // 'PT12H30M50.4S'
 
   final dur3 = IsoDuration.parse('P5Y'); // IsoDuration{years: 5, months: 0, weeks: 0, days: 0, hours: 0, minutes: 0, seconds: 0};
   //dur3.toSeconds(); // assertion error, years and months must be equal to 0
@@ -56,6 +59,7 @@ The time interval is specified in the following form `PnYnMnDTnHnMnS` where:</br
 - P indicates the period (**required**)</br>
 - nY indicates the number of years</br>
 - nM indicates the number of months</br>
+- nW indicates the number of weeks</br>
 - nD indicates the number of days</br>
 - T indicates the start of a time section (**required** if you are going to specify hours, minutes, or seconds)</br>
 - nH indicates the number of hours</br>

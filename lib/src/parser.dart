@@ -17,6 +17,7 @@ const _microsecsInSec = 1000000;
 /// - P indicates the period (required)
 /// - nY indicates the number of years
 /// - nM indicates the number of months
+/// - nW indicates the number of weeks
 /// - nD indicates the number of days
 /// - T indicates the start of a time section
 /// (required if you are going to specify hours, minutes, or seconds)
@@ -264,7 +265,7 @@ class IsoDuration {
 
   /// Returns formatted String with a specified [format].
   ///
-  /// Allowed format types:
+  /// Currently allowed format types:
   /// - h, hh
   /// - m, mm
   /// - s, ss
@@ -520,8 +521,5 @@ extension _IsoDurationDoubleExt on double {
 enum _TimeFormat { h, hh, m, mm, s, ss }
 
 extension _TimeFormatExt on _TimeFormat {
-  String describe() =>
-      toString()
-          .split('.')
-          .last;
+  String describe() => toString().split('.').last;
 }
