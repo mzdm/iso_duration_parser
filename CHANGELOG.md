@@ -1,10 +1,22 @@
 ## 1.0.0
 
 - Added `toIso` method which returns ISO 8601 Duration format from the IsoDuration object.
+- Added `withDate` method which adds/subtracts `IsoDuration` from a `DateTime`
+```dart
+final isoDur = IsoDuration.parse('PT12H');
+final dateTime = DateTime(2021, 1, 20, 8); // 2021-01-20 08:00:00.000
+isoDur.withDate(dateTime); // 2021-01-20 20:00:00.000
+```
+- Added `format` method which formats `IsoDuration` to specified String format
+```dart
+final durFormat = IsoDuration.parse('PT4H5M');
+durFormat.format('See you in {hh}h {m}m'); // See you in 04h 5m
+```
+- Other added methods: `isAfter`, `isBefore`, `isAtSameMomentAs`, `isPrecise`, `hasDecimals`, `copyWith`
 - Added a possibility to parse negative durations. `Minus` operator is allowed only before the literal `P`. An example:
 
 ```dart
--PT15H
+-P1DT15H
 ```
 - Bug fixes.
 - Updated dependencies.
