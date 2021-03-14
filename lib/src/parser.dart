@@ -81,7 +81,7 @@ class IsoDuration {
   /// See more:
   ///
   ///  * [IsoDuration] - ISO 8061 Duration Data Type
-  const IsoDuration({
+  IsoDuration({
     this.years = 0,
     this.months = 0,
     this.weeks = 0,
@@ -89,7 +89,14 @@ class IsoDuration {
     this.hours = 0,
     this.minutes = 0,
     this.seconds = 0,
-  });
+  }) : assert(
+          <double>[years, months, weeks, days, hours, minutes, seconds].every(
+                (e) => e <= 0,
+              ) ||
+              <double>[years, months, weeks, days, hours, minutes, seconds]
+                  .every((e) => e >= 0),
+          'Can not mix positive and negative values!',
+        );
 
   /// Returns `true` if all values of [IsoDuration] object are equal to 0.
   bool get isZero => _allProperties.every((element) => element == 0);
