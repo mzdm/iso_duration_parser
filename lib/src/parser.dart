@@ -307,6 +307,7 @@ class IsoDuration {
     return strBuffer.toString();
   }
 
+  // TODO: add a format for forcing to a number to be positive/negative (+,-)
   String _getFormat(String format) {
     final isShort = format.length == 1;
     final value = _formatValueMap[isShort ? '$format$format' : format]!.toInt();
@@ -314,14 +315,17 @@ class IsoDuration {
   }
 
   Map<String, double> get _formatValueMap => {
-    _TimeFormat.hh.describe(): hours,
-    _TimeFormat.mm.describe(): minutes,
-    _TimeFormat.ss.describe(): seconds,
-  };
+        _TimeFormat.hh.describe(): hours,
+        _TimeFormat.mm.describe(): minutes,
+        _TimeFormat.ss.describe(): seconds,
+      };
 
   String _addLeadingZeroIfNeeded(int value) {
-    if (value < 10) {
+    if (value < 10 && value >= 0) {
       return '0$value';
+    }
+    if (value > -10 && value < 0) {
+      return '-0${value * -1}';
     }
     return value.toString();
   }
@@ -369,13 +373,12 @@ class IsoDuration {
 
     final precisePart = copyWith(years: 0, months: 0);
     final microseconds = precisePart.toSeconds().secsToMicrosecs().truncate();
+
     if (isNegative) {
-      newDate.subtract(Duration(microseconds: microseconds * -1));
-    } else {
-      newDate.add(Duration(microseconds: microseconds));
+      return newDate.subtract(Duration(microseconds: microseconds * -1));
     }
 
-    return newDate;
+    return newDate.add(Duration(microseconds: microseconds));
   }
 
   /// Returns `true` if this [IsoDuration] this occurs after the `other`.
