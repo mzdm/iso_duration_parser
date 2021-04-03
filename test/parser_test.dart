@@ -914,8 +914,6 @@ void main() {
       input2 = 'P1Y';
       isoDuration = IsoDuration.parse(input);
       isoDuration2 = IsoDuration.parse(input2);
-      print(isoDuration.withDate(DateTime(2000)));
-      print(isoDuration2.withDate(DateTime(2000)));
       expect(isoDuration == isoDuration2, false);
       expect(isoDuration.isAtSameMomentAs(isoDuration2), false);
       expect(isoDuration.isBefore(isoDuration2), false);
@@ -941,181 +939,183 @@ void main() {
     });
 
     test('withDate', () {
-      final testDateTime = DateTime(2000);
-      final testDateTimeMid = DateTime(2000, 6, 15, 12);
-      final testDateTime2 = DateTime(2021, 5, 20);
-      final testDateTime3 = DateTime(2021, 5, 20, 10, 30);
+      final testDateTime = DateTime.utc(2000);
+      final testDateTimeMid = DateTime.utc(2000, 6, 15, 12);
+      final testDateTime2 = DateTime.utc(2021, 5, 20);
+      final testDateTime3 = DateTime.utc(2021, 5, 20, 10, 30);
+
+      final testDateTime3LocalTime = DateTime(2021, 5, 20, 10, 30);
 
       input = 'PT24H';
       isoDuration = IsoDuration.parse(input);
       expect(
         isoDuration.withDate(testDateTime),
-        DateTime(2000, 1, 2),
+        DateTime.utc(2000, 1, 2),
       );
       expect(
         isoDuration.withDate(testDateTime2),
-        DateTime(2021, 5, 21),
+        DateTime.utc(2021, 5, 21),
       );
 
       input = 'PT10M';
       isoDuration = IsoDuration.parse(input);
       expect(
         isoDuration.withDate(testDateTime),
-        DateTime(2000, 1, 1, 0, 10),
+        DateTime.utc(2000, 1, 1, 0, 10),
       );
 
       input = 'P0M';
       isoDuration = IsoDuration.parse(input);
       expect(
         isoDuration.withDate(testDateTime),
-        DateTime(2000),
+        DateTime.utc(2000),
       );
 
       input = 'PT0S';
       isoDuration = IsoDuration.parse(input);
       expect(
         isoDuration.withDate(testDateTime),
-        DateTime(2000),
+        DateTime.utc(2000),
       );
 
       input = 'P4M';
       isoDuration = IsoDuration.parse(input);
       expect(
         isoDuration.withDate(testDateTime),
-        DateTime(2000, 5),
+        DateTime.utc(2000, 5),
       );
       expect(
         isoDuration.withDate(testDateTime2),
-        DateTime(2021, 9, 20),
+        DateTime.utc(2021, 9, 20),
       );
 
       input = 'P4M2W';
       isoDuration = IsoDuration.parse(input);
       expect(
         isoDuration.withDate(testDateTime),
-        DateTime(2000, 5, 15),
+        DateTime.utc(2000, 5, 15),
       );
 
       input = 'P2W1DT5M';
       isoDuration = IsoDuration.parse(input);
       expect(
         isoDuration.withDate(testDateTime),
-        DateTime(2000, 1, 16, 0, 5),
+        DateTime.utc(2000, 1, 16, 0, 5),
       );
 
       input = 'P5Y';
       isoDuration = IsoDuration.parse(input);
       expect(
         isoDuration.withDate(testDateTime),
-        DateTime(2005),
+        DateTime.utc(2005),
       );
 
       input = 'P5Y2M10D';
       isoDuration = IsoDuration.parse(input);
       expect(
         isoDuration.withDate(testDateTime),
-        DateTime(2005, 3, 11),
+        DateTime.utc(2005, 3, 11),
       );
 
       input = 'P3Y6M4DT12H30M5S';
       isoDuration = IsoDuration.parse(input);
       expect(
         isoDuration.withDate(testDateTime),
-        DateTime(2003, 7, 5, 12, 30, 5),
+        DateTime.utc(2003, 7, 5, 12, 30, 5),
       );
 
       input = 'P1DT12H';
       isoDuration = IsoDuration.parse(input);
       expect(
         isoDuration.withDate(testDateTime),
-        DateTime(2000, 1, 2, 12),
+        DateTime.utc(2000, 1, 2, 12),
       );
 
       input = 'PT15H';
       isoDuration = IsoDuration.parse(input);
       expect(
         isoDuration.withDate(testDateTime),
-        DateTime(2000, 1, 1, 15),
+        DateTime.utc(2000, 1, 1, 15),
       );
       expect(
         isoDuration.withDate(testDateTime3),
-        DateTime(2021, 5, 20, 25, 30),
+        DateTime.utc(2021, 5, 20, 25, 30),
       );
 
       input = 'PT36H';
       isoDuration = IsoDuration.parse(input);
       expect(
         isoDuration.withDate(testDateTime),
-        DateTime(2000, 1, 1, 36),
+        DateTime.utc(2000, 1, 1, 36),
       );
 
       input = 'PT8H15M';
       isoDuration = IsoDuration.parse(input);
       expect(
         isoDuration.withDate(testDateTime),
-        DateTime(2000, 1, 1, 8, 15),
+        DateTime.utc(2000, 1, 1, 8, 15),
       );
       expect(
         isoDuration.withDate(testDateTime3),
-        DateTime(2021, 5, 20, 18, 45),
+        DateTime.utc(2021, 5, 20, 18, 45),
       );
 
       input = 'PT2H25M';
       isoDuration = IsoDuration.parse(input);
       expect(
         isoDuration.withDate(testDateTime),
-        DateTime(2000, 1, 1, 2, 25),
+        DateTime.utc(2000, 1, 1, 2, 25),
       );
       expect(
         isoDuration.withDate(testDateTime3),
-        DateTime(2021, 5, 20, 12, 55),
+        DateTime.utc(2021, 5, 20, 12, 55),
       );
 
       input = 'PT16H35M';
       isoDuration = IsoDuration.parse(input);
       expect(
         isoDuration.withDate(testDateTime),
-        DateTime(2000, 1, 1, 16, 35),
+        DateTime.utc(2000, 1, 1, 16, 35),
       );
 
       input = 'P10D';
       isoDuration = IsoDuration.parse(input);
       expect(
         isoDuration.withDate(testDateTime),
-        DateTime(2000, 1, 11),
+        DateTime.utc(2000, 1, 11),
       );
       expect(
         isoDuration.withDate(testDateTime2),
-        DateTime(2021, 5, 30),
+        DateTime.utc(2021, 5, 30),
       );
 
       input = 'P14D';
       isoDuration = IsoDuration.parse(input);
       expect(
         isoDuration.withDate(testDateTime),
-        DateTime(2000, 1, 15),
+        DateTime.utc(2000, 1, 15),
       );
       expect(
         isoDuration.withDate(testDateTime2),
-        DateTime(2021, 5, 34),
+        DateTime.utc(2021, 5, 34),
       );
       expect(
         isoDuration.withDate(testDateTime2),
-        DateTime(2021, 6, 3),
+        DateTime.utc(2021, 6, 3),
       );
 
       input = '-PT10M';
       isoDuration = IsoDuration.parse(input);
       expect(
         isoDuration.withDate(testDateTime3),
-        DateTime(2021, 5, 20, 10, 20),
+        DateTime.utc(2021, 5, 20, 10, 20),
       );
 
       input = '-P0M';
       isoDuration = IsoDuration.parse(input);
       expect(
         isoDuration.withDate(testDateTime),
-        DateTime(2000),
+        DateTime.utc(2000),
       );
       expect(
         isoDuration.withDate(testDateTime2),
@@ -1130,7 +1130,7 @@ void main() {
       isoDuration = IsoDuration.parse(input);
       expect(
         isoDuration.withDate(testDateTime),
-        DateTime(2000),
+        DateTime.utc(2000),
       );
       expect(
         isoDuration.withDate(testDateTime2),
@@ -1145,149 +1145,149 @@ void main() {
       isoDuration = IsoDuration.parse(input);
       expect(
         isoDuration.withDate(testDateTime),
-        DateTime(1999, 9),
+        DateTime.utc(1999, 9),
       );
       expect(
         isoDuration.withDate(testDateTime2),
-        DateTime(2021, 1, 20),
+        DateTime.utc(2021, 1, 20),
       );
 
       input = '-P4M2W';
       isoDuration = IsoDuration.parse(input);
       expect(
         isoDuration.withDate(testDateTimeMid),
-        DateTime(2000, 2, 1, 12),
+        DateTime.utc(2000, 2, 1, 12),
       );
 
       input = '-P2W1DT5M';
       isoDuration = IsoDuration.parse(input);
       expect(
         isoDuration.withDate(testDateTimeMid),
-        DateTime(2000, 6, 0, 11, 55),
+        DateTime.utc(2000, 6, 0, 11, 55),
       );
 
       input = '-P5Y';
       isoDuration = IsoDuration.parse(input);
       expect(
         isoDuration.withDate(testDateTime),
-        DateTime(1995),
+        DateTime.utc(1995),
       );
 
       input = '-P5Y2M10D';
       isoDuration = IsoDuration.parse(input);
       expect(
         isoDuration.withDate(testDateTimeMid),
-        DateTime(1995, 4, 5, 12),
+        DateTime.utc(1995, 4, 5, 12),
       );
 
       input = '-P3Y5M4DT12H30M5S';
       isoDuration = IsoDuration.parse(input);
       expect(
         isoDuration.withDate(testDateTimeMid),
-        DateTime(1997, 1, 10, 23, 29, 55),
+        DateTime.utc(1997, 1, 10, 23, 29, 55),
       );
 
       input = '-P1DT12H';
       isoDuration = IsoDuration.parse(input);
       expect(
         isoDuration.withDate(testDateTimeMid),
-        DateTime(2000, 6, 14, 0),
+        DateTime.utc(2000, 6, 14, 0),
       );
 
       input = '-PT15H';
       isoDuration = IsoDuration.parse(input);
       expect(
         isoDuration.withDate(testDateTimeMid),
-        DateTime(2000, 6, 15, -3),
+        DateTime.utc(2000, 6, 15, -3),
       );
 
       input = '-PT36H';
       isoDuration = IsoDuration.parse(input);
       expect(
         isoDuration.withDate(testDateTimeMid),
-        DateTime(2000, 6, 15, -24),
+        DateTime.utc(2000, 6, 15, -24),
       );
       expect(
         isoDuration.withDate(testDateTimeMid),
-        DateTime(2000, 6, 14, 0),
+        DateTime.utc(2000, 6, 14, 0),
       );
 
       input = '-PT8H15M';
       isoDuration = IsoDuration.parse(input);
       expect(
         isoDuration.withDate(testDateTime2),
-        DateTime(2021, 5, 20, -8, -15),
+        DateTime.utc(2021, 5, 20, -8, -15),
       );
 
       input = '-PT2H25M';
       isoDuration = IsoDuration.parse(input);
       expect(
         isoDuration.withDate(testDateTimeMid),
-        DateTime(2000, 6, 15, 9, 35),
+        DateTime.utc(2000, 6, 15, 9, 35),
       );
 
       input = '-PT16H35M';
       isoDuration = IsoDuration.parse(input);
       expect(
         isoDuration.withDate(testDateTime2),
-        DateTime(2021, 5, 20, -16, -35),
+        DateTime.utc(2021, 5, 20, -16, -35),
       );
 
       input = '-P10D';
       isoDuration = IsoDuration.parse(input);
       expect(
         isoDuration.withDate(testDateTimeMid),
-        DateTime(2000, 6, 5, 12),
+        DateTime.utc(2000, 6, 5, 12),
       );
       expect(
         isoDuration.withDate(testDateTime2),
-        DateTime(2021, 5, 10),
+        DateTime.utc(2021, 5, 10),
       );
 
       input = 'PT8M40.215S';
       isoDuration = IsoDuration.parse(input);
       expect(
         isoDuration.withDate(testDateTime3),
-        DateTime(2021, 5, 20, 10, 38, 40, 215),
+        DateTime.utc(2021, 5, 20, 10, 38, 40, 215),
       );
 
       input = '-PT8M40.215S';
       isoDuration = IsoDuration.parse(input);
       expect(
         isoDuration.withDate(testDateTime3),
-        DateTime(2021, 5, 20, 10, 22, -40, -215),
+        DateTime.utc(2021, 5, 20, 10, 22, -40, -215),
       );
 
       input = 'PT0.5S';
       isoDuration = IsoDuration.parse(input);
       expect(
         isoDuration.withDate(testDateTime3),
-        DateTime(2021, 5, 20, 10, 30, 0, 500),
+        DateTime.utc(2021, 5, 20, 10, 30, 0, 500),
       );
 
       input = '-PT0.5S';
       isoDuration = IsoDuration.parse(input);
       expect(
         isoDuration.withDate(testDateTime3),
-        DateTime(2021, 5, 20, 10, 30, 0, -500),
+        DateTime.utc(2021, 5, 20, 10, 30, 0, -500),
       );
 
       input = 'PT2.75M';
       isoDuration = IsoDuration.parse(input);
       expect(
         isoDuration.withDate(testDateTime3),
-        DateTime(2021, 5, 20, 10, 32, 45),
+        DateTime.utc(2021, 5, 20, 10, 32, 45),
+      );
+      expect(
+        isoDuration.withDate(testDateTime3LocalTime),
+        isNot(DateTime.utc(2021, 5, 20, 10, 32, 45)),
       );
 
       input = '-PT2.75M';
       isoDuration = IsoDuration.parse(input);
       expect(
         isoDuration.withDate(testDateTime3),
-        DateTime(2021, 5, 20, 10, 27, 15),
-      );
-      expect(
-        isoDuration.withDate(testDateTime3),
-        DateTime(2021, 5, 20, 10, 28, -45),
+        DateTime.utc(2021, 5, 20, 10, 27, 15),
       );
 
       input = 'P0.5Y';

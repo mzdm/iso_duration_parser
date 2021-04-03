@@ -357,10 +357,13 @@ class IsoDuration {
   }
 
   /// Adds current [IsoDuration] to a specified [dateTime] (or subtracts if
-  /// [isNegative] is `true`).
+  /// [IsoDuration] is `negative`).
   ///
   /// Both [years] and [months] must not be decimal, otherwise it is not
   /// possible to accurately calculate and return from it new [DateTime].
+  ///
+  /// It is recommended to work with UTC [DateTime] due to
+  /// DST (Daylight Saving Time). [DateTime] by default uses local time!
   ///
   /// Example:
   /// ```dart
@@ -387,15 +390,25 @@ class IsoDuration {
       return dateTime.add(Duration(microseconds: microseconds));
     }
 
-    final newDate = DateTime(
-      dateTime.year + years.truncate(),
-      dateTime.month + months.truncate(),
-      dateTime.day,
-      dateTime.hour,
-      dateTime.minute,
-      dateTime.millisecond,
-      dateTime.microsecond,
-    );
+    final newDate = dateTime.isUtc
+        ? DateTime.utc(
+            dateTime.year + years.truncate(),
+            dateTime.month + months.truncate(),
+            dateTime.day,
+            dateTime.hour,
+            dateTime.minute,
+            dateTime.millisecond,
+            dateTime.microsecond,
+          )
+        : DateTime(
+            dateTime.year + years.truncate(),
+            dateTime.month + months.truncate(),
+            dateTime.day,
+            dateTime.hour,
+            dateTime.minute,
+            dateTime.millisecond,
+            dateTime.microsecond,
+          );
 
     final precisePart = copyWith(years: 0, months: 0);
     final microseconds = precisePart.toSeconds().secsToMicrosecs().truncate();
@@ -469,7 +482,7 @@ class IsoDuration {
   }
 
   bool _isAfter(IsoDuration other) {
-    final testDate = DateTime(2000);
+    final testDate = DateTime.utc(2000);
     final date1 = withDate(testDate);
     final date2 = other.withDate(testDate);
 
@@ -477,7 +490,7 @@ class IsoDuration {
   }
 
   bool _isAtSameMomentAs(IsoDuration other) {
-    final testDate = DateTime(2000);
+    final testDate = DateTime.utc(2000);
     final date1 = withDate(testDate);
     final date2 = other.withDate(testDate);
 
