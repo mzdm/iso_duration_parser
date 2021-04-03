@@ -270,6 +270,21 @@ class IsoDuration {
     return strBuffer.toString();
   }
 
+  /// Inverses [IsoDuration].
+  ///
+  /// If [IsoDuration] is negative then it will be positive and vice versa.
+  IsoDuration inverse() {
+    return IsoDuration(
+      years: years == 0 ? 0 : years.inverse(),
+      months: months == 0 ? 0 : months.inverse(),
+      weeks: weeks == 0 ? 0 : weeks.inverse(),
+      days: days == 0 ? 0 : days.inverse(),
+      hours: hours == 0 ? 0 : hours.inverse(),
+      minutes: minutes == 0 ? 0 : minutes.inverse(),
+      seconds: seconds == 0 ? 0 : seconds.inverse(),
+    );
+  }
+
   /// Returns formatted String with a specified [format].
   ///
   /// Currently allowed format types:
@@ -525,6 +540,8 @@ extension _IsoDurationStringExt on String {
 
 extension _IsoDurationDoubleExt on double {
   double plus() => this < 0 ? this * -1 : this;
+
+  double inverse() => this * -1;
 
   bool isDecimal() => this != truncateToDouble();
 

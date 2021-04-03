@@ -556,6 +556,67 @@ void main() {
       expect(isoDurationCopy.toIso(), '-P5DT5H5S');
     });
 
+    test('inverse', () {
+      input = 'PT0S';
+      isoDuration = IsoDuration.parse(input);
+      expect(isoDuration.isNegative, false);
+      expect(isoDuration.inverse().isNegative, false);
+
+      input = 'PT10M';
+      isoDuration = IsoDuration.parse(input);
+      expect(isoDuration.isNegative, false);
+      print(isoDuration.inverse());
+      expect(isoDuration.inverse().isNegative, true);
+
+      input = 'P4M2WT1S';
+      isoDuration = IsoDuration.parse(input);
+      expect(isoDuration.isNegative, false);
+      expect(isoDuration.inverse().isNegative, true);
+      expect(
+        isoDuration.inverse(),
+        IsoDuration(months: -4, weeks: -2, seconds: -1),
+      );
+
+      input = '-P4M2WT1S';
+      isoDuration = IsoDuration.parse(input);
+      expect(isoDuration.isNegative, true);
+      expect(isoDuration.inverse().isNegative, false);
+      expect(
+        isoDuration.inverse(),
+        IsoDuration(months: 4, weeks: 2, seconds: 1),
+      );
+
+      input = 'P2W1DT5M';
+      isoDuration = IsoDuration.parse(input);
+      expect(isoDuration.isNegative, false);
+      expect(isoDuration.inverse().isNegative, true);
+
+      input = 'P0.5Y';
+      isoDuration = IsoDuration.parse(input);
+      expect(isoDuration.isNegative, false);
+      expect(isoDuration.inverse().isNegative, true);
+
+      input = 'P1DT2H45M';
+      isoDuration = IsoDuration.parse(input);
+      expect(isoDuration.isNegative, false);
+      expect(isoDuration.inverse().isNegative, true);
+
+      input = '-P1DT2H45M';
+      isoDuration = IsoDuration.parse(input);
+      expect(isoDuration.isNegative, true);
+      expect(isoDuration.inverse().isNegative, false);
+
+      input = 'P1DT12H';
+      isoDuration = IsoDuration.parse(input);
+      expect(isoDuration.isNegative, false);
+      expect(isoDuration.inverse().isNegative, true);
+
+      input = '-P1DT12H';
+      isoDuration = IsoDuration.parse(input);
+      expect(isoDuration.isNegative, true);
+      expect(isoDuration.inverse().isNegative, false);
+    });
+
     test('format', () {
       late String format;
 
