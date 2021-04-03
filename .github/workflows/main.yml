@@ -6,7 +6,7 @@ jobs:
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Flutter action
+      - name: Setup dart action
         uses: dart-lang/setup-dart@v1
         with:
           sdk: '2.12.0'
@@ -14,3 +14,13 @@ jobs:
         run: dart pub get
       - name: Run tests
         run: dart test
+      - name: Install test_coverage
+        run: pub global activate test_coverage
+      - name: Run test_coverage
+        run: pub global run test_coverage
+      - name: Upload coverage to Codecov
+        if: github.ref == 'refs/heads/master'
+        uses: codecov/codecov-action@v1
+        with:
+          file: coverage/lcov.info
+

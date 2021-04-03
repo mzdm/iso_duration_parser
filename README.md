@@ -1,6 +1,8 @@
 # iso_duration_parser
 
-[![pub package](https://img.shields.io/pub/v/iso_duration_parser.svg)](https://pub.dev/packages/iso_duration_parser) ![tests](https://github.com/mzdm/iso_duration_parser/actions/workflows/main.yml/badge.svg)
+[![pub package](https://img.shields.io/pub/v/iso_duration_parser.svg)](https://pub.dev/packages/iso_duration_parser) 
+![tests](https://github.com/mzdm/iso_duration_parser/actions/workflows/main.yml/badge.svg)
+[![codecov](https://codecov.io/gh/mzdm/iso_duration_parser/branch/master/graph/badge.svg)](https://codecov.io/gh/mzdm/iso_duration_parser)
 
 A package which parses [ISO 8061 Duration](https://en.wikipedia.org/wiki/ISO_8601#Durations) PnYnMnDTnHnMnS format.
 
