@@ -273,14 +273,22 @@ class IsoDuration {
   /// Returns formatted String with a specified [format].
   ///
   /// Currently allowed format types:
-  /// - h, hh
-  /// - m, mm
-  /// - s, ss
+  /// - Y, YY (years)
+  /// - M, MM (months)
+  /// - W, WW (weeks)
+  /// - D, DD (days)
+  /// - h, hh (hours)
+  /// - m, mm (months)
+  /// - s, ss (seconds)
   ///
   /// To use it as a format type wrap it with curly braces.
   ///
   /// Two character length format type, e.g. 'ss', adds a trailing zero at
   /// the beginning if it is lesser than 10.
+  ///
+  /// If the [IsoDuration] is negative then a `minus` is present in the format
+  /// as well. To inverse (negative becomes positive and vice versa) the [IsoDuration]
+  /// use [inverse].
   ///
   /// Example:
   /// ```dart
@@ -307,7 +315,6 @@ class IsoDuration {
     return strBuffer.toString();
   }
 
-  // TODO: add a format for forcing to a number to be positive/negative (+,-)
   String _getFormat(String format) {
     final isShort = format.length == 1;
     final value = _formatValueMap[isShort ? '$format$format' : format]!.toInt();
@@ -315,6 +322,10 @@ class IsoDuration {
   }
 
   Map<String, double> get _formatValueMap => {
+        _TimeFormat.YY.describe(): years,
+        _TimeFormat.MM.describe(): months,
+        _TimeFormat.WW.describe(): weeks,
+        _TimeFormat.DD.describe(): days,
         _TimeFormat.hh.describe(): hours,
         _TimeFormat.mm.describe(): minutes,
         _TimeFormat.ss.describe(): seconds,
@@ -528,7 +539,7 @@ extension _IsoDurationDoubleExt on double {
   double secsToMicrosecs() => this * _microsecsInSec;
 }
 
-enum _TimeFormat { h, hh, m, mm, s, ss }
+enum _TimeFormat { Y, YY, M, MM, W, WW, D, DD, h, hh, m, mm, s, ss }
 
 extension _TimeFormatExt on _TimeFormat {
   String describe() => toString().split('.').last;

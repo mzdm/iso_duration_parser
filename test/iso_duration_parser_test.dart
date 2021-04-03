@@ -649,26 +649,40 @@ void main() {
       isoDuration = IsoDuration.parse(input);
       expect(isoDuration.format(format), '0');
 
-      // does not format
-      input = 'PT1M';
-      format = '{}';
+      input = 'P4M2WT1S';
+      format = '{ww} {MM}';
       isoDuration = IsoDuration.parse(input);
-      expect(isoDuration.format(format), '{}');
+      expect(isoDuration.format(format), '{ww} 04');
 
-      input = 'PT1M';
-      format = '{m';
+      input = 'P4M2WT1S';
+      format = '{WW} {MM}';
       isoDuration = IsoDuration.parse(input);
-      expect(isoDuration.format(format), '{m');
+      expect(isoDuration.format(format), '02 04');
 
-      input = 'PT1M';
-      format = '{mm';
+      input = '-P4M2WT1S';
+      format = '{WW} {MM}';
       isoDuration = IsoDuration.parse(input);
-      expect(isoDuration.format(format), '{mm');
+      expect(isoDuration.format(format), '-02 -04');
 
-      input = 'PT1M';
-      format = '{{}}';
+      input = 'P0.5Y3MT1M';
+      format = 'yyyy-MM-dd';
       isoDuration = IsoDuration.parse(input);
-      expect(isoDuration.format(format), '{{}}');
+      expect(isoDuration.format(format), 'yyyy-MM-dd');
+
+      input = 'P5Y3M1DT1M';
+      format = '{YY}-{MM}-{DD}';
+      isoDuration = IsoDuration.parse(input);
+      expect(isoDuration.format(format), '05-03-01');
+
+      input = 'P5Y';
+      format = 'm{MM}m..{Y}y';
+      isoDuration = IsoDuration.parse(input);
+      expect(isoDuration.format(format), 'm00m..5y');
+
+      input = '-P5Y';
+      format = 'm{MM}m..{Y}y';
+      isoDuration = IsoDuration.parse(input);
+      expect(isoDuration.format(format), 'm00m..-5y');
 
       input = 'PT1M';
       format = '{{mm}min';
@@ -694,6 +708,42 @@ void main() {
       format = '.{{m}}.min';
       isoDuration = IsoDuration.parse(input);
       expect(isoDuration.format(format), '.{-1}.min');
+
+      // incorrect format
+      input = 'PT1M';
+      format = '{}';
+      isoDuration = IsoDuration.parse(input);
+      expect(isoDuration.format(format), '{}');
+
+      input = 'PT1M';
+      format = '{m';
+      isoDuration = IsoDuration.parse(input);
+      expect(isoDuration.format(format), '{m');
+
+      input = 'PT1M';
+      format = '{mm';
+      isoDuration = IsoDuration.parse(input);
+      expect(isoDuration.format(format), '{mm');
+
+      input = 'PT1M';
+      format = '{Mm}';
+      isoDuration = IsoDuration.parse(input);
+      expect(isoDuration.format(format), '{Mm}');
+
+      input = 'P1MT1M';
+      format = '{Mm}';
+      isoDuration = IsoDuration.parse(input);
+      expect(isoDuration.format(format), '{Mm}');
+
+      input = 'PT1M';
+      format = '{Mm';
+      isoDuration = IsoDuration.parse(input);
+      expect(isoDuration.format(format), '{Mm');
+
+      input = 'PT1M';
+      format = '{{}}';
+      isoDuration = IsoDuration.parse(input);
+      expect(isoDuration.format(format), '{{}}');
     });
 
     test('comparing durations', () {
