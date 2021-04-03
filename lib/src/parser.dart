@@ -254,17 +254,17 @@ class IsoDuration {
     final strNegative = isNegative ? '-' : '';
     final strBuffer = StringBuffer('${strNegative}P');
 
-    if (years != 0) strBuffer.write('${_delTrailingZero(years.inv())}Y');
-    if (months != 0) strBuffer.write('${_delTrailingZero(months.inv())}M');
-    if (weeks != 0) strBuffer.write('${_delTrailingZero(weeks.inv())}W');
-    if (days != 0) strBuffer.write('${_delTrailingZero(days.inv())}D');
+    if (years != 0) strBuffer.write('${years.plus().delTrailingZero()}Y');
+    if (months != 0) strBuffer.write('${months.plus().delTrailingZero()}M');
+    if (weeks != 0) strBuffer.write('${weeks.plus().delTrailingZero()}W');
+    if (days != 0) strBuffer.write('${days.plus().delTrailingZero()}D');
 
     if (<double>[hours, minutes, seconds].any((e) => e != 0)) {
       strBuffer.write('T');
 
-      if (hours != 0) strBuffer.write('${_delTrailingZero(hours.inv())}H');
-      if (minutes != 0) strBuffer.write('${_delTrailingZero(minutes.inv())}M');
-      if (seconds != 0) strBuffer.write('${_delTrailingZero(seconds.inv())}S');
+      if (hours != 0) strBuffer.write('${hours.plus().delTrailingZero()}H');
+      if (minutes != 0) strBuffer.write('${minutes.plus().delTrailingZero()}M');
+      if (seconds != 0) strBuffer.write('${seconds.plus().delTrailingZero()}S');
     }
 
     return strBuffer.toString();
@@ -519,24 +519,24 @@ class IsoDuration {
       seconds.hashCode;
 }
 
-String _delTrailingZero(double n) {
-  final hasTrailingZero = n.truncateToDouble() == n;
-  if (hasTrailingZero) {
-    return n.toStringAsFixed(0);
-  }
-  return n.toString();
-}
-
 extension _IsoDurationStringExt on String {
   String replaceComma() => replaceFirst(',', '.');
 }
 
 extension _IsoDurationDoubleExt on double {
-  double inv() => this < 0 ? this * -1 : this;
+  double plus() => this < 0 ? this * -1 : this;
 
   bool isDecimal() => this != truncateToDouble();
 
   double secsToMicrosecs() => this * _microsecsInSec;
+
+  String delTrailingZero() {
+    final hasTrailingZero = truncateToDouble() == this;
+    if (hasTrailingZero) {
+      return toStringAsFixed(0);
+    }
+    return toString();
+  }
 }
 
 enum _TimeFormat { Y, YY, M, MM, W, WW, D, DD, h, hh, m, mm, s, ss }
