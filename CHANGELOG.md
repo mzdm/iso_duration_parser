@@ -1,3 +1,10 @@
+## 1.1.0
+
+- `withDate` now handles and supports UTC `DateTime`.
+- `format` now supports years, months, weeks and days as well.
+- Added `inverse` method which makes `IsoDuration` positive if it is negative and vice versa.
+- Updated README.
+
 ## 1.0.0
 
 - Added `toIso` method which returns ISO 8601 Duration format from the IsoDuration object.

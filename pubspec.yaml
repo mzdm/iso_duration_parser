@@ -1,7 +1,7 @@
 name: iso_duration_parser
 description: A package which parses ISO 8061 Duration (PnYnMnDTnHnMnS format).
 homepage: https://github.com/mzdm/iso_duration_parser
-version: 1.0.0
+version: 1.1.0
 
 environment:
   sdk: '>=2.12.0 <3.0.0'
