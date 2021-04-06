@@ -1283,6 +1283,17 @@ void main() {
         isNot(DateTime.utc(2021, 5, 20, 10, 32, 45)),
       );
 
+      input = 'P2M';
+      isoDuration = IsoDuration.parse(input);
+      expect(
+        isoDuration.withDate(testDateTime3),
+        DateTime.utc(2021, 7, 20, 10, 30),
+      );
+      expect(
+        isoDuration.withDate(testDateTime3LocalTime),
+        isNot(DateTime.utc(2021, 5, 20, 10, 30)),
+      );
+
       input = '-PT2.75M';
       isoDuration = IsoDuration.parse(input);
       expect(
