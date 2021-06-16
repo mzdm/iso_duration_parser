@@ -92,6 +92,17 @@ void main() {
       expect(isoDuration.hasDecimals, false);
       expect(isoDuration.toSeconds(), 1296300);
 
+      // const same
+      input = 'P2W1DT5M';
+      isoDurationNullable = IsoDuration.tryParse(input);
+      expect(isoDurationNullable, isNotNull);
+      isoDuration = IsoDuration.parse(input);
+      expect(isoDuration, const IsoDuration(weeks: 2, days: 1, minutes: 5));
+      expect(isoDuration.toIso(), input);
+      expect(isoDuration.isPrecise, true);
+      expect(isoDuration.hasDecimals, false);
+      expect(isoDuration.toSeconds(), 1296300);
+
       input = 'P5Y';
       isoDurationNullable = IsoDuration.tryParse(input);
       expect(isoDurationNullable, isNotNull);
@@ -575,6 +586,16 @@ void main() {
       expect(
         isoDuration.inverse(),
         IsoDuration(months: -4, weeks: -2, seconds: -1),
+      );
+
+      // const same
+      input = 'P4M2WT1S';
+      isoDuration = IsoDuration.parse(input);
+      expect(isoDuration.isNegative, false);
+      expect(isoDuration.inverse().isNegative, true);
+      expect(
+        isoDuration.inverse(),
+        const IsoDuration(months: -4, weeks: -2, seconds: -1),
       );
 
       input = '-P4M2WT1S';
@@ -1460,36 +1481,74 @@ void main() {
     });
 
     test('invalid initialization', () {
+      // arguments with zeros are valid
+      expect(
+        () => IsoDuration(
+            years: -5,
+            months: -5,
+            weeks: 0,
+            days: -1,
+            hours: -2,
+            minutes: -5,
+            seconds: -2),
+        isNot(throwsA(isA<AssertionError>())),
+      );
       expect(() => IsoDuration(minutes: 0, seconds: -0),
           isNot(throwsA(isA<AssertionError>())));
       expect(() => IsoDuration(minutes: 0, seconds: -5),
           isNot(throwsA(isA<AssertionError>())));
-      expect(() => IsoDuration(hours: 0, minutes: 0.01, seconds: -5),
-          throwsA(isA<AssertionError>()));
-      expect(() => IsoDuration(years: -5, minutes: 1, seconds: -5),
-          throwsA(isA<AssertionError>()));
-      expect(() => IsoDuration(minutes: 0.00000001, seconds: -1),
-          throwsA(isA<AssertionError>()));
+
+      // mixing both positive and negative values are invalid
       expect(
-          () => IsoDuration(
-              years: -5,
-              months: -5,
-              weeks: 0,
-              days: -1,
-              hours: -2,
-              minutes: -5,
-              seconds: 2),
-          throwsA(isA<AssertionError>()));
+        () => IsoDuration(hours: 0, minutes: 0.01, seconds: -5),
+        throwsA(
+          isA<AssertionError>().having(
+            (AssertionError e) => e.message,
+            'message',
+            startsWith('Can not mix positive'),
+          ),
+        ),
+      );
+
       expect(
-          () => IsoDuration(
-              years: -5,
-              months: -5,
-              weeks: 0,
-              days: -1,
-              hours: -2,
-              minutes: -5,
-              seconds: -2),
-          isNot(throwsA(isA<AssertionError>())));
+        () => IsoDuration(years: -5, minutes: 1, seconds: -5),
+        throwsA(
+          isA<AssertionError>().having(
+            (AssertionError e) => e.message,
+            'message',
+            startsWith('Can not mix positive'),
+          ),
+        ),
+      );
+
+      expect(
+        () => IsoDuration(minutes: 0.00000001, seconds: -1),
+        throwsA(
+          isA<AssertionError>().having(
+            (AssertionError e) => e.message,
+            'message',
+            startsWith('Can not mix positive'),
+          ),
+        ),
+      );
+
+      expect(
+        () => IsoDuration(
+            years: -5,
+            months: -5,
+            weeks: 0,
+            days: -1,
+            hours: -2,
+            minutes: -5,
+            seconds: 2),
+        throwsA(
+          isA<AssertionError>().having(
+            (AssertionError e) => e.message,
+            'message',
+            startsWith('Can not mix positive'),
+          ),
+        ),
+      );
     });
   });
 }
