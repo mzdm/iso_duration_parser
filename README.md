@@ -6,6 +6,8 @@
 
 A package which parses [ISO 8061 Duration](https://en.wikipedia.org/wiki/ISO_8601#Durations) PnYnMnDTnHnMnS format.
 
+It is a duration format where each value represents an **individual** duration part.
+
 ## Usage
 
 A simple usage example:

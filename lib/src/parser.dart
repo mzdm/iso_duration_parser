@@ -5,7 +5,10 @@ const _secsInDay = 86400;
 const _secsInHour = 3600;
 const _microsecsInSec = 1000000;
 
-/// [IsoDuration] - ISO 8061 Duration Data Type
+/// {@template iso_duration}
+///
+/// [IsoDuration] (also known as ISO 8061 Duration Data Type), is a
+/// duration format where each value represents an **individual** duration part.
 ///
 /// The duration data type is used to specify a time interval.
 ///
@@ -38,43 +41,54 @@ const _microsecsInSec = 1000000;
 ///
 /// **Note**: This [IsoDuration] is not like Dart's implementation of [Duration].
 ///
-/// Despite the similar name, a [Duration] object does not implement "Durations"
-/// as specified by ISO 8601. In particular, a duration object does not keep track
+/// Despite the similar name, Dart's [Duration] object does not implement "Durations"
+/// as specified by ISO 8601. In particular, this object does not keep track
 /// of the individually provided members (such as "days" or "hours"),
 /// but only uses these arguments to compute the length of
-/// the corresponding time interval.
+/// the corresponding time interval (sum of all individual parts).
 ///
 /// See also:
 ///
 ///  * [Wikipedia, ISO_8601 Durations](https://en.wikipedia.org/wiki/ISO_8601#Durations)
 ///  * [XSD Duration Data Type](https://www.w3schools.com/xml/schema_dtypes_date.asp)
+/// {@endtemplate}
 class IsoDuration {
-  /// The duration part in years, if was given, otherwise defaults to 0.
+  /// The duration part in years.
+  ///
+  /// Defaults to 0.
   final double years;
 
-  /// The duration part in months, if was given, otherwise defaults to 0.
+  /// The duration part in months.
+  ///
+  /// Defaults to 0.
   final double months;
 
-  /// The duration part in weeks, if was given, otherwise defaults to 0.
+  /// The duration part in weeks.
+  ///
+  /// Defaults to 0.
   final double weeks;
 
-  /// The duration part in days, if was given, otherwise defaults to 0.
+  /// The duration part in days.
+  ///
+  /// Defaults to 0.
   final double days;
 
-  /// The duration part in hours, if was given, otherwise defaults to 0.
+  /// The duration part in hours.
+  ///
+  /// Defaults to 0.
   final double hours;
 
-  /// The duration part in minutes, if was given, otherwise defaults to 0.
+  /// The duration part in minutes.
+  ///
+  /// Defaults to 0.
   final double minutes;
 
-  /// The duration part in seconds, if was given, otherwise defaults to 0.
+  /// The duration part in seconds.
+  ///
+  /// Defaults to 0.
   final double seconds;
 
-  /// Creates a new [IsoDuration] object where each value represents
-  /// an individual duration part.
-  ///
-  /// This [IsoDuration] is not like Dart's implementation of [Duration]
-  /// whose value is the sum of all individual parts.
+  /// {@macro iso_duration}
   ///
   /// All arguments are 0 by default.
   ///
