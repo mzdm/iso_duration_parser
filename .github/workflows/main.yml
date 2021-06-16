@@ -5,21 +5,24 @@ jobs:
     name: Run tests
     runs-on: macos-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v2.3.4
       - name: Setup dart action
-        uses: dart-lang/setup-dart@v1
+        uses: dart-lang/setup-dart@v1.0
         with:
-          sdk: '2.12.0'
+          sdk: 'stable'
+#          sdk: '2.12.0'
       - name: Install dependencies
         run: dart pub get
       - name: Run tests
         run: dart test
+      - name: Check formatting
+        run: dart format --output=none --set-exit-if-changed .
       - name: Install test_coverage
         run: pub global activate test_coverage
       - name: Run test_coverage
         run: pub global run test_coverage
       - name: Upload coverage to Codecov
         if: github.ref == 'refs/heads/master'
-        uses: codecov/codecov-action@v1
+        uses: codecov/codecov-action@v1.5.2
         with:
           file: coverage/lcov.info
