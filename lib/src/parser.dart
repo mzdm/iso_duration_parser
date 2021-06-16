@@ -90,12 +90,8 @@ class IsoDuration {
 
   /// {@macro iso_duration}
   ///
-  /// All arguments are 0 by default.
-  ///
-  /// See more:
-  ///
-  ///  * [IsoDuration] - ISO 8061 Duration Data Type
-  IsoDuration({
+  /// All parameters are 0 by default.
+  const IsoDuration({
     this.years = 0,
     this.months = 0,
     this.weeks = 0,
@@ -104,11 +100,20 @@ class IsoDuration {
     this.minutes = 0,
     this.seconds = 0,
   }) : assert(
-          <double>[years, months, weeks, days, hours, minutes, seconds].every(
-                (e) => e <= 0,
-              ) ||
-              <double>[years, months, weeks, days, hours, minutes, seconds]
-                  .every((e) => e >= 0),
+          (years <= 0 &&
+                  months <= 0 &&
+                  weeks <= 0 &&
+                  days <= 0 &&
+                  hours <= 0 &&
+                  minutes <= 0 &&
+                  seconds <= 0) ||
+              (years >= 0 &&
+                  months >= 0 &&
+                  weeks >= 0 &&
+                  days >= 0 &&
+                  hours >= 0 &&
+                  minutes >= 0 &&
+                  seconds >= 0),
           'Can not mix positive and negative values!',
         );
 
